@@ -1,12 +1,16 @@
+export type CategoryProperties = {
+  name: string;
+  description?: string;
+  is_active?: boolean;
+  created_at?: Date;
+}
+
 export class Category {
   constructor(
-    private _name: string
+    readonly props: CategoryProperties
   ) { }
 
   changeName(name: string) {
-    this._name = name;
-  }
-  get name(): string {
-    return this._name;
+    this.props.name = name;
   }
 }
