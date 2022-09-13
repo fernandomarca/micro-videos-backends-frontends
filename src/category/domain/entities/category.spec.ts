@@ -1,3 +1,4 @@
+import { UniqueEntityId } from "../../../@seedwork/domain/unique-entity-id.vo";
 import { Category } from "./category";
 describe('Category Unit Tests', () => {
   test('constructor of category', () => {
@@ -59,6 +60,23 @@ describe('Category Unit Tests', () => {
     expect(category.props).toMatchObject<CategoryProps>({
       name: "Movie",
       created_at
+    });
+  });
+
+  test("id field", () => {
+
+    const data = [
+      { props: { name: "Movie" } },
+      { props: { name: "Movie" }, id: null },
+      { props: { name: "Movie" }, id: undefined },
+      { props: { name: "Movie" }, id: new UniqueEntityId("5b079134-71f2-4aba-b401-a1ffe2963d25") },
+    ]
+
+    data.forEach((item) => {
+      const category = new Category(item.props, item.id);
+      expect(category.id).toBeDefined();
+      expect(category.id).not.toBeNull();
+      expect(category.id).toBeInstanceOf(UniqueEntityId);
     });
   });
 
