@@ -1,9 +1,10 @@
-import { InvalidUuidError } from "../../@seedwork/errors/invalid-uuid.error";
+import { InvalidUuidError } from "../../../@seedwork/errors/invalid-uuid.error";
 import { randomUUID } from "node:crypto";
+import { ValueObject } from "./value-object";
 
-export class UniqueEntityId {
-  constructor(readonly id?: string) {
-    this.id = id || randomUUID();
+export class UniqueEntityId extends ValueObject<string> {
+  constructor(private id?: string) {
+    super(id || randomUUID());
     this.validate();
   }
 
