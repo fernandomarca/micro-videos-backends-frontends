@@ -11,7 +11,7 @@ describe("ValueObject unit Tests", () => {
 
     vo = new StubValueObject({ prop1: "value1" });
     expect(vo.value).toStrictEqual({ prop1: "value1" });
-
+    console.log(vo)
 
   });
 });
