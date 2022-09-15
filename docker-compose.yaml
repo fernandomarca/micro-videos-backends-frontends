@@ -6,4 +6,4 @@ services:
     container_name: micro-videos-typescript-app
     volumes:
       - .:/home/node/app
-      - /home/node/app/node_modules
+      # - /home/node/app/node_modules

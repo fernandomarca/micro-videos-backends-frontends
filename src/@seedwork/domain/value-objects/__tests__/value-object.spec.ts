@@ -1,6 +1,6 @@
 import { ValueObject } from "../value-object";
 
-class StubValueObject extends ValueObject {
+export class StubValueObject extends ValueObject {
 
 }
 
@@ -16,8 +16,8 @@ describe("ValueObject unit Tests", () => {
   it("should convert to a string", () => {
     const date = new Date();
     const arrange = [
-      { received: null, expect: "null" },
-      { received: undefined, expect: "undefined" },
+      // { received: null, expect: "null" },
+      // { received: undefined, expect: "undefined" },
       { received: { prop1: "value" }, expect: JSON.stringify({ prop1: "value" }) },
       { received: "", expect: "" },
       { received: 0, expect: "0" },

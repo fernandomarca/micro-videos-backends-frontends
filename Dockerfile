@@ -14,9 +14,9 @@ RUN mkdir -p /usr/share/man/man1 && \
 
 ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 
-RUN usermod -o -u 1000 node
+# RUN usermod -o -u 1000 node
 
-USER node
+# USER node
 
 WORKDIR /home/node/app
 
@@ -28,7 +28,6 @@ COPY . /home/node/app/
 
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.2/zsh-in-docker.sh)" -- \
   -t https://github.com/romkatv/powerlevel10k \
-  # -t https://github.com/spaceship-prompt/spaceship-prompt \
   -p git \
   -p git-flow \
   -p https://github.com/zdharma-continuum/fast-syntax-highlighting \
