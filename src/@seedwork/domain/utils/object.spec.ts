@@ -36,4 +36,5 @@ describe('object unit Tests', () => {
 
     expect(vo.value.deep.prop3).toBeInstanceOf(Date);
   });
+
 });
