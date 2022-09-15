@@ -11,7 +11,26 @@ describe("ValueObject unit Tests", () => {
 
     vo = new StubValueObject({ prop1: "value1" });
     expect(vo.value).toStrictEqual({ prop1: "value1" });
-    console.log(vo)
+  });
 
+  it("should convert to a string", () => {
+    const date = new Date();
+    const arrange = [
+      { received: null, expect: "null" },
+      { received: undefined, expect: "undefined" },
+      { received: { prop1: "value" }, expect: JSON.stringify({ prop1: "value" }) },
+      { received: "", expect: "" },
+      { received: 0, expect: "0" },
+      { received: true, expect: "true" },
+      { received: false, expect: "false" },
+      { received: 5, expect: "5" },
+      { received: date, expect: date.toString() },
+      { received: "teste fake", expect: "teste fake" },
+    ];
+
+    arrange.forEach((arrange) => {
+      const vo = new StubValueObject(arrange.received);
+      expect(vo + "").toBe(arrange.expect);
+    })
   });
 });
