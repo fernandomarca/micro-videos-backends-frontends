@@ -1,6 +1,6 @@
 import { UniqueEntityId } from "../value-objects/unique-entity-id.vo";
 
-export class Entity<Props>{
+export abstract class Entity<Props>{
   readonly uniqueEntityId: UniqueEntityId;
 
   constructor(
