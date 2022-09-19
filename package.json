@@ -1,18 +1,23 @@
 {
-  "name": "micro-videos",
+  "name": "micro-videos-typescript",
   "version": "1.0.0",
-  "description": "admin do catalogo de videos",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "ts-node": "ts-node",
-    "tsc": "tsc",
-    "clean:tsc": "rm tsconfig.tsbuildinfo",
-    "test": "jest"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fernandomarca/micro-videos-typescript.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "bugs": {
+    "url": "https://github.com/fernandomarca/micro-videos-typescript/issues"
+  },
+  "homepage": "https://github.com/fernandomarca/micro-videos-typescript#readme",
+  "dependencies": {
     "@swc/core": "^1.3.0",
     "@swc/jest": "^0.2.22",
     "@types/jest": "^29.0.1",

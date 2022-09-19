@@ -22,8 +22,6 @@ WORKDIR /home/node/app
 
 COPY ./package*.json /home/node/app/
 
-RUN npm init -y
-
 RUN npm install
 
 COPY . /home/node/app/
