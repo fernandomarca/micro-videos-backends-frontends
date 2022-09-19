@@ -16,11 +16,13 @@ ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 
 # RUN usermod -o -u 1000 node
 
-# USER node
+USER node
 
 WORKDIR /home/node/app
 
 COPY ./package*.json /home/node/app/
+
+RUN npm init -y
 
 RUN npm install
 
