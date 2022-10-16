@@ -19,9 +19,11 @@ function assertIsValid(expected: ExpectedRule) {
   expect(() => { runRule(expected) }).not.toThrow(expected.error);
 }
 
-function runRule({ value, property, rule, params = [] }: Omit<ExpectedRule, "error">) {
+function runRule({ value, property, rule, params }: Omit<ExpectedRule, "error">) {
   const validator = ValidatorRules.values(value, property);
   const method = validator[rule];
+  // ...args: any[]
+  //@ts-ignore
   method.apply(validator, params);
 }
 describe("ValidatorRules Unit Tests", () => {
