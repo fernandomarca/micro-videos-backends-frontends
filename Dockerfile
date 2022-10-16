@@ -1,8 +1,8 @@
-FROM node:16-slim
-
+FROM node:16.17.1-slim
 RUN mkdir -p /usr/share/man/man1 && \
   echo 'deb http://ftp.debian.org/debian stretch-backports main' | tee /etc/apt/sources.list.d/stretch-backports.list && \
   apt update && apt install -y \
+  bash \
   git \
   ca-certificates \
   openjdk-11-jre \
@@ -14,18 +14,12 @@ RUN mkdir -p /usr/share/man/man1 && \
 
 ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 
-# RUN usermod -o -u 1000 node
+# RUN groupmod -g 1000 node && usermod -u 1000 -g 1000 node
+# USER node
 
-USER node
+RUN mkdir -p /home/node/app
 
 WORKDIR /home/node/app
-
-COPY ./package*.json /home/node/app/
-
-RUN npm install
-
-COPY . /home/node/app/
-
 RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.2/zsh-in-docker.sh)" -- \
   -t https://github.com/romkatv/powerlevel10k \
   -p git \
@@ -37,5 +31,8 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
 
 RUN echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> ~/.zshrc && \
   echo 'HISTFILE=/home/node/zsh/.zsh_history' >> ~/.zshrc 
+COPY --chown=node:node ./.docker ./
 
-CMD ["tail","-f","/dev/null"]
+CMD ["./.docker/start.sh"]
+
+# CMD ["tail","-f","/dev/null"]
