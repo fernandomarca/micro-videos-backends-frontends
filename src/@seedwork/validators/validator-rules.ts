@@ -14,20 +14,20 @@ export class ValidatorRules {
     }
     return this;
   }
-  string(): Omit<this, 'string'> {
+  string(): Omit<this, 'string' | 'required' | 'boolean'> {
     if (!isEmpty(this.value) && typeof this.value !== "string") {
       throw new ValidationError(`The ${this.property} must be a string`);
     }
     return this;
   }
-  maxLength(max: number): Omit<this, 'maxLength'> {
+  maxLength(max: number): Omit<this, 'maxLength' | 'required' | 'boolean' | 'string'> {
     if (!isEmpty(this.value) && this.value.length > max) {
       throw new ValidationError(`The ${this.property} must be less than ${max} characters`);
     }
     return this;
   }
 
-  boolean(): Omit<this, 'boolean'> {
+  boolean(): Omit<this, 'boolean' | 'required' | 'string' | 'maxLength'> {
     if (!isEmpty(this.value) && typeof this.value !== "boolean") {
       throw new ValidationError(`The ${this.property} must be a boolean`);
     }
