@@ -2,6 +2,10 @@ import { UniqueEntityId } from "../../../@seedwork/domain/value-objects/unique-e
 import { Category } from "./category";
 
 describe('Category Unit Tests', () => {
+
+  beforeEach(() => {
+    Category.validate = jest.fn()
+  })
   test('constructor of category', () => {
     /**
      * type CategoryPropsWithOutCreated_at = Omit<CategoryProps, "created_at">;
@@ -10,6 +14,7 @@ describe('Category Unit Tests', () => {
      */
     type CategoryProps = typeof category.props;
     let category = new Category({ name: "Movie" });
+    expect(Category.validate).toHaveBeenCalled();
     expect(category.props).toStrictEqual<CategoryProps>({
       name: "Movie",
       is_active: true,
@@ -126,6 +131,7 @@ describe('Category Unit Tests', () => {
     const category = new Category({ name: "Movie" });
     category.update("documentary", "some description");
 
+    expect(Category.validate).toHaveBeenCalledTimes(2);
     expect(category.name).toBe("documentary");
     expect(category.description).toBe("some description");
   });
