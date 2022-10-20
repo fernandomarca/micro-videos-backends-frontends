@@ -1,4 +1,4 @@
-import { InvalidUuidError } from "../../../@seedwork/errors/invalid-uuid.error";
+import { InvalidUuidError } from "../errors/invalid-uuid.error";
 import { randomUUID } from "node:crypto";
 import { ValueObject } from "./value-object";
 
