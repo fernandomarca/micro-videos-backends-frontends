@@ -1,18 +1,13 @@
+import { Usecase } from "../../../@seedwork/application/use-case";
 import CategoryRepository from "category/domain/repository/CategoryRepository";
-import { CategoryOutput } from "../dto/category-output.dto";
+import { CategoryOutput, CategoryOutputMapper } from "../dto/category-output.dto";
 
-export class GetCategoryUseCase {
+export class GetCategoryUseCase implements Usecase<Input, Output>  {
   constructor(private categoryRepo: CategoryRepository.Repository) { }
 
   async execute(input: Input): Promise<Output> {
     const entity = await this.categoryRepo.findById(input.id);
-    return {
-      id: entity.id,
-      name: entity.name,
-      description: entity.description,
-      is_active: entity.is_active,
-      created_at: entity.created_at
-    }
+    return CategoryOutputMapper.toOutput(entity);
   }
 }
 

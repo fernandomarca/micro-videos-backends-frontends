@@ -100,7 +100,7 @@ type SearchResultProps<E extends Entity, Filter> = {
   filter: Filter;
 }
 
-export class SearchResult<E extends Entity, Filter = string> {
+export class SearchResult<E extends Entity = Entity, Filter = string> {
   readonly items: E[];
   readonly total: number;
   readonly current_page: number;
