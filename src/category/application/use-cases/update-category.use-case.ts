@@ -13,7 +13,7 @@ export class UpdateCategoryUseCase implements Usecase<Input, Output> {
       entity.activate();
     }
 
-    if (input.is_active === true) {
+    if (input.is_active === false) {
       entity.deactivate();
     }
 
