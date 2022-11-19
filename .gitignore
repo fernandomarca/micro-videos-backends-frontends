@@ -1,3 +1,4 @@
+__coverage
 .history
 node_modules
 tsconfig.tsbuildinfo

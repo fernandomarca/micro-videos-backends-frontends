@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "tsc": "tsc",
+    "tsc:check": "npm run tsc -- --noEmit",
+    "test:cov": "npm run test -- --coverage"
   },
   "repository": {
     "type": "git",
