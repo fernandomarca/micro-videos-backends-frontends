@@ -3,11 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "imports": {
+    "#seedwork/*": "./dist/@seedwork/*.js",
+    "#category/*": "./dist/category/*.js"
+  },
   "scripts": {
     "test": "jest",
     "tsc": "tsc",
     "tsc:check": "npm run tsc -- --noEmit",
-    "test:cov": "npm run test -- --coverage"
+    "test:cov": "npm run test -- --coverage",
+    "cti": "cti",
+    "cti:@core": "sh ./cti.sh"
   },
   "repository": {
     "type": "git",
@@ -31,6 +37,9 @@
     "typescript": "^4.8.3"
   },
   "devDependencies": {
-    "regenerator-runtime": "^0.13.10"
+    "create-ts-index": "^1.14.0",
+    "regenerator-runtime": "^0.13.10",
+    "ttypescript": "^1.5.13",
+    "typescript-transform-paths": "^3.4.4"
   }
 }
