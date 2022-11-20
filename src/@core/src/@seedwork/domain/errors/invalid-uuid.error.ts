@@ -4,3 +4,5 @@ export class InvalidUuidError extends Error {
     this.name = "InvalidUuidError";
   }
 }
+
+export default InvalidUuidError;

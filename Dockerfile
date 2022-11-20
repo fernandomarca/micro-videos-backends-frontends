@@ -35,6 +35,6 @@ RUN echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> ~/.zshrc && \
   echo 'HISTFILE=/home/node/zsh/.zsh_history' >> ~/.zshrc 
 COPY --chown=node:node ./.docker ./
 
-CMD ["./.docker/start.sh"]
+# CMD ["./.docker/start.sh"]
 
-# CMD ["tail","-f","/dev/null"]
+CMD ["tail","-f","/dev/null"]

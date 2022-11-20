@@ -100,3 +100,5 @@ export abstract class InMemorySearchableRepository<E extends Entity>
     return items.slice(start, limit);
   }
 }
+
+export default [InMemoryRepository, InMemorySearchableRepository];

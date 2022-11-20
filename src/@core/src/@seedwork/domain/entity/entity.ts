@@ -21,3 +21,5 @@ export abstract class Entity<Props = any>{
     } as Required<{ id: string } & Props>;
   }
 }
+
+export default Entity;

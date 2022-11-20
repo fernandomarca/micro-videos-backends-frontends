@@ -20,3 +20,4 @@ export abstract class ClassValidatorFields<PropsValidated> implements ValidatorF
     //!2=falsy
   }
 }
+export default ClassValidatorFields;

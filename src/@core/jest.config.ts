@@ -1,9 +1,9 @@
-/*
- * For a detailed explanation regarding each configuration property and type check, visit:
- * https://jestjs.io/docs/configuration
- */
-
 export default {
+  displayName: {
+    name: '@core',
+    color: 'blue',
+
+  },
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -23,7 +23,7 @@ export default {
   // collectCoverageFrom: undefined,
 
   // The directory where Jest should output its coverage files
-  coverageDirectory: "<rootDir>/../__coverage",
+  coverageDirectory: "../__coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
   // coveragePathIgnorePatterns: [
@@ -34,13 +34,13 @@ export default {
   coverageProvider: "v8",
 
   // A list of reporter names that Jest uses when writing coverage reports
-  coverageReporters: [
-    "json",
-    // "text",
-    // "lcov",
-    // "clover",
-    "html"
-  ],
+  // coverageReporters: [
+  //   "json",
+  //   // "text",
+  //   // "lcov",
+  //   // "clover",
+  //   "html"
+  // ],
 
   // An object that configures minimum threshold enforcement for coverage results
   coverageThreshold: {
