@@ -32,7 +32,6 @@ describe("UpdateCategoryUseCase Unit Tests", () => {
       is_active: true,
       created_at: repository.items[0].created_at,
     });
-    // type Arrange = typeof arrange;
     type Arrange = {
       input: { id: string, name: string, description?: string, is_active?: boolean, },
       expect: { id: string, name: string, description: string, is_active: boolean, created_at: Date }

@@ -1,0 +1,1 @@
+{"version":"0.0.1","name":"nestjs","dependencies":{"@nestjs/common":{"version":"8.4.7"},"@nestjs/core":{"version":"8.4.7"},"@nestjs/mapped-types":{"version":"1.2.0"},"@nestjs/platform-express":{"version":"8.4.7"},"reflect-metadata":{"version":"0.1.13"},"rimraf":{"version":"3.0.2"},"rxjs":{"version":"7.5.7"}}}
