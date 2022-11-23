@@ -19,7 +19,7 @@ export namespace CreateCategoryUseCase {
     is_active?: boolean;
   }
 
-  type Output = CategoryOutput;
+  export type Output = CategoryOutput;
 }
 
 export default CreateCategoryUseCase;

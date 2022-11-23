@@ -24,7 +24,7 @@ export namespace ListCategoriesUseCase {
 
   export type Input = SearchInputDto;
 
-  type Output = PaginationOutputDto<CategoryOutput>;
+  export type Output = PaginationOutputDto<CategoryOutput>;
 }
 
 export default ListCategoriesUseCase;
