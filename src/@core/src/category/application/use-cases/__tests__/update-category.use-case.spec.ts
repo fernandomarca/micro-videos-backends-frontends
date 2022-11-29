@@ -122,11 +122,6 @@ describe("UpdateCategoryUseCase Unit Tests", () => {
       }
     ];
 
-    // arrange.forEach(async (i) => {
-    //   output = await useCase.execute(i.input);
-    //   expect(output).toStrictEqual(i.expect);
-    // });
-
     for (const i of arrange) {
       output = await useCase.execute(i.input);
       expect(output).toStrictEqual(i.expect);

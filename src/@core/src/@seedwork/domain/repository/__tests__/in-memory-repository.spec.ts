@@ -38,12 +38,12 @@ describe("InMemoryRepository unit tests", () => {
     expect(entity.toJSON()).toStrictEqual((await repository.findAll())[0].toJSON());
   });
 
-  it("should throws error when entity not found", () => {
-    expect(repository.findById('fake id')).rejects.toThrow(
+  it("should throws error when entity not found", async () => {
+    await expect(repository.findById('fake id')).rejects.toThrow(
       new NotFoundError('Entity Not Found using ID fake id')
     );
 
-    expect(repository.findById(new UniqueEntityId("767d4814-451e-46fe-88e7-511adc91f40e"))).rejects.toThrow(
+    await expect(repository.findById(new UniqueEntityId("767d4814-451e-46fe-88e7-511adc91f40e"))).rejects.toThrow(
       new NotFoundError('Entity Not Found using ID 767d4814-451e-46fe-88e7-511adc91f40e')
     );
   });
