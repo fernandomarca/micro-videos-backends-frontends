@@ -69,16 +69,16 @@ describe('Category Unit Tests', () => {
     });
   });
 
-  test("id field", () => {
+  describe("id field", () => {
 
-    const data = [
+    const arrange = [
       { props: { name: "Movie" } },
       { props: { name: "Movie" }, id: null },
       { props: { name: "Movie" }, id: undefined },
       { props: { name: "Movie" }, id: new UniqueEntityId("5b079134-71f2-4aba-b401-a1ffe2963d25") },
-    ]
+    ];
 
-    data.forEach((item) => {
+    test.each(arrange)("when props is %j", (item) => {
       const category = new Category(item.props, item.id);
       expect(category.id).toBeDefined();
       expect(category.id).not.toBeNull();
