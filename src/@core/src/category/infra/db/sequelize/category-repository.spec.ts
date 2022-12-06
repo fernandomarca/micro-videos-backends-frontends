@@ -1,14 +1,13 @@
 import { Category, CategoryRepository } from "#category/domain";
 import { NotFoundError, UniqueEntityId } from "#seedwork/domain";
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
-import { CategoryModel } from "./category-model";
-import { CategorySequelizeRepository } from "./category-repository";
+import { CategorySequelize } from "./category-sequelize";
 import chance from 'chance';
-import { CategoryModelMapper } from "./category-mapper";
 
+const { CategoryModel, CategoryModelMapper, CategorySequelizeRepository } = CategorySequelize;
 describe("CategorySequelizeRepository unit tests", () => {
   setupSequelize({ models: [CategoryModel] });
-  let repository: CategorySequelizeRepository;
+  let repository: CategorySequelize.CategorySequelizeRepository;
 
   beforeEach(async () => {
     repository = new CategorySequelizeRepository(CategoryModel)

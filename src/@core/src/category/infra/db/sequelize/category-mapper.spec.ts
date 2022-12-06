@@ -1,18 +1,17 @@
 import { Category } from "#category/domain";
 import { LoadEntityError, UniqueEntityId } from "#seedwork/domain";
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
-import { CategoryModelMapper } from "./category-mapper";
-import { CategoryModel } from "./category-model";
+import { CategorySequelize } from "./category-sequelize";
 
 describe('CategoryModelMapper unit tests', () => {
   setupSequelize({
-    models: [CategoryModel]
+    models: [CategorySequelize.CategoryModel]
   });
   it('should throws error when category is invalid', () => {
-    const model = CategoryModel.build({ id: '767d4814-451e-46fe-88e7-511adc91f40e' });
+    const model = CategorySequelize.CategoryModel.build({ id: '767d4814-451e-46fe-88e7-511adc91f40e' });
 
     try {
-      CategoryModelMapper.toEntity(model);
+      CategorySequelize.CategoryModelMapper.toEntity(model);
       fail('The category is valid, but it needs throws a LoadEntityError');
     } catch (e) {
       expect(e).toBeInstanceOf(LoadEntityError);
@@ -31,22 +30,22 @@ describe('CategoryModelMapper unit tests', () => {
       .mockImplementation(() => {
         throw error;
       });
-    const model = CategoryModel.build({ id: '767d4814-451e-46fe-88e7-511adc91f40e' });
-    expect(() => CategoryModelMapper.toEntity(model)).toThrow(error);
+    const model = CategorySequelize.CategoryModel.build({ id: '767d4814-451e-46fe-88e7-511adc91f40e' });
+    expect(() => CategorySequelize.CategoryModelMapper.toEntity(model)).toThrow(error);
     expect(spyValidate).toHaveBeenCalled();
     spyValidate.mockRestore();
   });
 
   it('should convert a category model to a category entity', () => {
     const created_at = new Date();
-    const model = CategoryModel.build({
+    const model = CategorySequelize.CategoryModel.build({
       id: '767d4814-451e-46fe-88e7-511adc91f40e',
       name: "some value",
       description: "some description",
       is_active: true,
       created_at
     });
-    const entity = CategoryModelMapper.toEntity(model);
+    const entity = CategorySequelize.CategoryModelMapper.toEntity(model);
     expect(entity.toJSON()).toStrictEqual(
       new Category(
         {
