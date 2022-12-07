@@ -66,8 +66,19 @@ export namespace CategorySequelize {
       return models.map((m) => CategoryModelMapper.toEntity(m));
     }
 
-    async update(entity: Category): Promise<void> { }
-    async delete(id: string | UniqueEntityId): Promise<void> { }
+    async update(entity: Category): Promise<void> {
+      await this._get(entity.id);
+      await this.categoryModel.update(entity.toJSON(), {
+        where: { id: entity.id }
+      });
+    }
+    async delete(id: string | UniqueEntityId): Promise<void> {
+      const _id = `${id}`;
+      await this._get(_id);
+      this.categoryModel.destroy({
+        where: { id: _id }
+      });
+    }
 
     private async _get(id: string): Promise<CategoryModel> {
       return this.categoryModel.findByPk(id, { rejectOnEmpty: new NotFoundError(`Entity Not Found using ID ${id}`) });
