@@ -1,7 +1,7 @@
 import { CreateCategoryUseCase, ListCategoriesUseCase } from '@fm/micro-videos/category/application';
 import { SortDirection } from '@fm/micro-videos/dist/@seedwork/domain/repository/repository-contracts';
-import { CategoriesController } from './categories.controller';
-import { CreateCategoryDto } from './dto/create-category.dto';
+import { CategoriesController } from '../../categories.controller';
+import { CreateCategoryDto } from '../../dto/create-category.dto';
 
 describe('CategoriesController Unit TEsts', () => {
   let controller: CategoriesController;
