@@ -24,3 +24,4 @@ Content-Type: application/json
 ###
 DELETE  http://localhost:3000/categories/b6862b8e-9bb8-48aa-ae52-58e313c96bb2
 Content-Type: application/json
+
