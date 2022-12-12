@@ -1,5 +1,7 @@
 import Joi, { Schema } from "joi";
-import { CONFIG_DB_SCHEMA } from '../config.module'
+import { ConfigModule, CONFIG_DB_SCHEMA } from '../config.module'
+import { Test } from '@nestjs/testing';
+import { join } from "path";
 
 function expectValidate(schema: Schema, value: any) {
   return expect(schema.validate(value, { abortEarly: false }).error.message);
@@ -250,5 +252,28 @@ describe("Schema unit tests", () => {
         });
       });
     });
+  });
+});
+
+describe("ConfigModule unit tests", () => {
+  it('should throw an error when env vars are invalid', () => {
+    try {
+      Test.createTestingModule({
+        imports: [ConfigModule.forRoot({
+          envFilePath: join(__dirname, '.env.fake'),
+        })]
+      });
+      fail('ConfigModule should throw an error when env vars are invalid');
+    } catch (e) {
+      expect(e.message).toContain("\"DB_VENDOR\" must be one of [mysql, sqlite, postgres]");
+    }
+  });
+
+  it("should be valid", () => {
+    const module = Test.createTestingModule({
+      imports: [ConfigModule.forRoot()]
+    });
+
+    expect(module).toBeDefined();
   });
 });
