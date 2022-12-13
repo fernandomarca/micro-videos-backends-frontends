@@ -1,8 +1,7 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule as NestConfigModule, ConfigModuleOptions, ConfigService } from '@nestjs/config';
 import { join } from 'path';
-import Joi from 'joi';
-import { NestApplicationContext } from '@nestjs/core';
+import * as Joi from 'joi';
 
 type DB_SCHEMA_TYPE = {
   DB_VENDOR: 'mysql' | 'sqlite' | 'postgres',
@@ -44,22 +43,26 @@ export type CONFIG_SCHEMA_TYPE = DB_SCHEMA_TYPE;
 @Module({})
 export class ConfigModule extends NestConfigModule {
   static forRoot(options: ConfigModuleOptions = {}): DynamicModule {
+    // console.log(join(__dirname, '../envs/.env'));
+    const { envFilePath, ...otherOptions } = options;
     return super.forRoot({
+      isGlobal: true,
       envFilePath: [
-        ...(Array.isArray(options.envFilePath) ? options.envFilePath
-          : [options.envFilePath]),
+        ...(Array.isArray(envFilePath) ? envFilePath
+          : [envFilePath]),
         join(__dirname, `../envs/.env.${process.env.NODE_ENV}`),
         join(__dirname, '../envs/.env')
       ],
       validationSchema: Joi.object({
         ...CONFIG_DB_SCHEMA,
       }),
-      ...options
+      ...otherOptions
     });
   }
   //implementação de abstração para buscar os valores de configuração
-  static getConfigValue<T extends NestApplicationContext>(value: keyof CONFIG_SCHEMA_TYPE, app: T) {
-    const configService = app.get<ConfigService<CONFIG_SCHEMA_TYPE>>(ConfigService);
+  static getConfigValue(value: keyof CONFIG_SCHEMA_TYPE) {
+    // const configService = app.get<ConfigService<CONFIG_SCHEMA_TYPE>>(ConfigService);
+    const configService = new ConfigService();
     return configService.get<CONFIG_SCHEMA_TYPE[typeof value]>(value);
   };
 }
