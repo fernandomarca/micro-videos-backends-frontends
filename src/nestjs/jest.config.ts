@@ -9,7 +9,11 @@ export default {
     "ts"
   ],
   rootDir: "src",
-  testRegex: ".*\\.spec\\.ts$",
+  testRegex: [".*\\..*spec\\.ts$",
+    ".*\\..*int-spec\\.ts$",
+    ".*\\..*e2e-spec\\.ts$",
+    ".*\\..*ispec\\.ts$"
+  ],
   transform: {
     "^.+\\.(t|j)s$": "@swc/jest"
   },
