@@ -1,4 +1,4 @@
-import { Column, DataType, PrimaryKey, Sequelize, Table, Model } from "sequelize-typescript";
+import { Column, DataType, PrimaryKey, Table, Model } from "sequelize-typescript";
 import { SequelizeModelFactory } from "./sequelize-model-factory";
 import chance from "chance";
 import { validUUID } from "#seedwork/domain";
