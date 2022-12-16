@@ -10,6 +10,7 @@ import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { SearchCategoryDto } from './dto/search-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CategoryPresenter } from './presenter/category.presenter';
 
 @Controller('categories')
 export class CategoriesController {
@@ -30,7 +31,8 @@ export class CategoriesController {
 
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
-    return await this.createCategory.execute(createCategoryDto);
+    const output = await this.createCategory.execute(createCategoryDto);
+    return new CategoryPresenter(output);
     // return await this.categoriesService.create({ name: "asdasd" });
   }
 
@@ -44,20 +46,22 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.getCategory.execute({ id });
+  async findOne(@Param('id') id: string) {
+    const output = await this.getCategory.execute({ id });
+    return new CategoryPresenter(output);
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id')
     id: string,
     @Body()
     updateCategoryDto: UpdateCategoryDto) {
-    return this.updateCategory.execute({
+    const output = await this.updateCategory.execute({
       id,
       ...updateCategoryDto
     });
+    return new CategoryPresenter(output);
   }
 
   @HttpCode(204)

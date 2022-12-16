@@ -1,11 +1,12 @@
 import { CreateCategoryUseCase, DeleteCategoryUseCase, GetCategoryUseCase, ListCategoriesUseCase, UpdateCategoryUseCase } from "@fm/micro-videos/category/application";
-import { CategoryInMemoryRepository } from "@fm/micro-videos/category/infra";
+import { CategoryInMemoryRepository, CategorySequelize } from "@fm/micro-videos/category/infra";
 import { Test, TestingModule } from "@nestjs/testing";
 import { CategoriesController } from "../../../categories/categories.controller";
 import { CategoriesModule } from "../../../categories/categories.module";
 import { ConfigModule } from "../../../config/config.module";
 import { DatabaseModule } from "../../../database/database.module";
 import { CATEGORIES_PROVIDERS } from '../../categories.providers';
+import { NotFoundError } from '@fm/micro-videos/@seedwork/domain';
 
 describe('CategoriesController Integration tests', () => {
   let controller: CategoriesController;
@@ -34,6 +35,50 @@ describe('CategoriesController Integration tests', () => {
   });
 
   describe("should create a category", () => {
+    const arrange = [
+      {
+        request: {
+          name: 'Movie'
+        },
+        expectedOutput: {
+          name: "Movie",
+          description: null,
+          is_active: true,
+        }
+      },
+      {
+        request: {
+          name: 'Movie',
+          description: 'some description',
+          is_active: false
+        },
+        expectedOutput: {
+          name: 'Movie',
+          description: 'some description',
+          is_active: false
+        }
+      }
+    ];
+    test.each(arrange)('with request $request', async ({ request, expectedOutput }) => {
+      const presenter = await controller.create(request);
+      const entity = await repository.findById(presenter.id);
+
+      expect(presenter.id).toBe(entity.id);
+      expect(entity).toMatchObject({
+        id: presenter.id,
+        name: expectedOutput.name,
+        description: expectedOutput.description,
+        is_active: expectedOutput.is_active,
+        created_at: presenter.created_at
+      });
+    });
+  });
+
+  describe("should update a category", () => {
+    let category: CategorySequelize.CategoryModel;
+    beforeEach(async () => {
+      category = await CategorySequelize.CategoryModel.factory().create();
+    });
 
     const arrange = [
       {
@@ -61,18 +106,41 @@ describe('CategoriesController Integration tests', () => {
     ];
 
     test.each(arrange)('with request $request', async ({ request, expectedOutput }) => {
-      const output = await controller.create(request);
-      const entity = await repository.findById(output.id);
+      const presenter = await controller.update(category.id, request);
+      const entity = await repository.findById(presenter.id);
 
-      expect(output.id).toBe(entity.id);
+      expect(presenter.id).toBe(entity.id);
       expect(entity).toMatchObject({
-        id: output.id,
+        id: presenter.id,
         name: expectedOutput.name,
         description: expectedOutput.description,
         is_active: expectedOutput.is_active,
-        created_at: output.created_at
+        created_at: presenter.created_at
       });
     });
 
+  });
+
+  it('should delete a category', async () => {
+    const category = await CategorySequelize.CategoryModel.factory().create();
+    const response = await controller.remove(category.id);
+    expect(response).not.toBeDefined();
+    await expect(repository.findById(category.id)).rejects.toThrow(
+      new NotFoundError(`Entity Not Found using ID ${category.id}`)
+    )
+  });
+
+  it('should get a category', async () => {
+    const category = await CategorySequelize.CategoryModel.factory().create();
+    const presenter = await controller.findOne(category.id);
+
+    expect(presenter.id).toBe(category.id);
+    expect(category).toMatchObject({
+      id: presenter.id,
+      name: presenter.name,
+      description: presenter.description,
+      is_active: presenter.is_active,
+      created_at: presenter.created_at
+    });
   });
 });
