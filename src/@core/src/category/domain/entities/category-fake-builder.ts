@@ -17,7 +17,7 @@ export class CategoryFakeBuilder<TBuild> {
   private _created_at = undefined;
   private countObjs: number;
 
-  constructor(countObjs: number = 1) {
+  private constructor(countObjs: number = 1) {
     this.countObjs = countObjs;
     this.chance = Chance();
   }

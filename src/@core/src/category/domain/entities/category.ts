@@ -2,6 +2,7 @@ import { EntityValidationError } from "#seedwork/domain/errors/validation-error"
 import { Entity } from "#seedwork/domain/entity/entity";
 import { UniqueEntityId } from "#seedwork/domain/value-objects/unique-entity-id.vo";
 import CategoryValidatorFactory from "#category/domain/validators/category.validator";
+import { CategoryFakeBuilder } from "./category-fake-builder";
 
 export type CategoryProperties = {
   name: string;
@@ -74,5 +75,9 @@ export class Category extends Entity<CategoryProperties> {
 
   get created_at() {
     return this.props.created_at;
+  }
+
+  static fake() {
+    return CategoryFakeBuilder;
   }
 }
