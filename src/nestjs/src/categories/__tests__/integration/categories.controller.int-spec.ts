@@ -7,6 +7,7 @@ import { ConfigModule } from "../../../config/config.module";
 import { DatabaseModule } from "../../../database/database.module";
 import { CATEGORIES_PROVIDERS } from '../../categories.providers';
 import { NotFoundError } from '@fm/micro-videos/@seedwork/domain';
+import { Category } from "@fm/micro-videos/category/domain";
 
 describe('CategoriesController Integration tests', () => {
   let controller: CategoriesController;
@@ -75,9 +76,11 @@ describe('CategoriesController Integration tests', () => {
   });
 
   describe("should update a category", () => {
-    let category: CategorySequelize.CategoryModel;
+    // let category: CategorySequelize.CategoryModel;
+    const category = Category.fake().aCategory().build();
     beforeEach(async () => {
-      category = await CategorySequelize.CategoryModel.factory().create();
+      // category = await CategorySequelize.CategoryModel.factory().create();
+      await repository.insert(category);
     });
 
     const arrange = [
@@ -122,7 +125,8 @@ describe('CategoriesController Integration tests', () => {
   });
 
   it('should delete a category', async () => {
-    const category = await CategorySequelize.CategoryModel.factory().create();
+    const category = Category.fake().aCategory().build();
+    await repository.insert(category);
     const response = await controller.remove(category.id);
     expect(response).not.toBeDefined();
     await expect(repository.findById(category.id)).rejects.toThrow(
@@ -131,7 +135,8 @@ describe('CategoriesController Integration tests', () => {
   });
 
   it('should get a category', async () => {
-    const category = await CategorySequelize.CategoryModel.factory().create();
+    const category = Category.fake().aCategory().build();
+    await repository.insert(category);
     const presenter = await controller.findOne(category.id);
 
     expect(presenter.id).toBe(category.id);

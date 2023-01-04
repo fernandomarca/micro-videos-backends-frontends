@@ -164,4 +164,61 @@ describe("is_active prop", () => {
       expect(categories[1].created_at.getTime()).toBe(date.getTime() + 1 + 2);
     });
   });
+
+  it("should create a category", () => {
+    const faker = CategoryFakeBuilder.aCategory();
+    let category = faker.build();
+
+    expect(category.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
+    expect(typeof category.name === "string").toBeTruthy();
+    expect(typeof category.description === "string").toBeTruthy();
+    expect(category.is_active).toBeTruthy();
+    expect(category.created_at).toBeInstanceOf(Date);
+
+    const created_at = new Date();
+    const uniqueEntityId = new UniqueEntityId();
+    category = faker.withUniqueEntityId(uniqueEntityId)
+      .withName('name test')
+      .withDescription('description test')
+      .deactivate()
+      .withCreatedAt(created_at)
+      .build();
+    expect(category.uniqueEntityId.value).toBe(uniqueEntityId.value);
+    expect(category.name).toBe('name test');
+    expect(category.description).toBe('description test');
+    expect(category.is_active).toBeFalsy();
+    expect(category.props.created_at).toEqual(created_at);
+
+  });
+
+  it("should create many categories", () => {
+    const faker = CategoryFakeBuilder.theCategories(2);
+    let categories = faker.build();
+
+    categories.forEach((category) => {
+      expect(category.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
+      expect(typeof category.name === "string").toBeTruthy();
+      expect(typeof category.description === "string").toBeTruthy();
+      expect(category.is_active).toBeTruthy();
+      expect(category.created_at).toBeInstanceOf(Date);
+    });
+
+    const created_at = new Date();
+    const uniqueEntityId = new UniqueEntityId();
+    categories = faker
+      .withUniqueEntityId(uniqueEntityId)
+      .withName('name test')
+      .withDescription('description test')
+      .deactivate()
+      .withCreatedAt(created_at)
+      .build();
+    categories.forEach((category) => {
+      expect(category.uniqueEntityId.value).toBe(uniqueEntityId.value);
+      expect(category.name).toBe('name test');
+      expect(category.description).toBe('description test');
+      expect(category.is_active).toBeFalsy();
+      expect(category.props.created_at).toEqual(created_at);
+    });
+
+  });
 });

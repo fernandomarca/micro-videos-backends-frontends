@@ -98,17 +98,17 @@ export class CategoryFakeBuilder<TBuild> {
   build(): TBuild {
     const categories = new Array(this.countObjs).fill(undefined)
       .map((_, index) => {
-        const category = new Category({
-          ...(this._unique_entity_id && {
-            unique_entity_id: this.callFactory(this._unique_entity_id, index)
-          }),
-          name: this.callFactory(this._name, index),
-          description: this.callFactory(this._description, index),
-          is_active: this.callFactory(this._is_active, index),
-          ...(this._created_at && {
-            created_at: this.callFactory(this._created_at, index)
-          }),
-        })
+        const category = new Category(
+          {
+            name: this.callFactory(this._name, index),
+            description: this.callFactory(this._description, index),
+            is_active: this.callFactory(this._is_active, index),
+            ...(this._created_at && {
+              created_at: this.callFactory(this._created_at, index)
+            }),
+          },
+          !this._unique_entity_id ? undefined : this.callFactory(this._unique_entity_id, index)
+        )
         // Object.defineProperty();
         // Object.assign(category, {
         //   ...(this.unique_entity_id && {
