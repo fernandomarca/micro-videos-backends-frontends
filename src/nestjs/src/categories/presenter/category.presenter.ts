@@ -1,5 +1,6 @@
-import { CategoryOutput } from "@fm/micro-videos/category/application";
+import { CategoryOutput, ListCategoriesUseCase } from "@fm/micro-videos/category/application";
 import { Transform } from "class-transformer";
+import { CollectionPresenter } from "../../@share/presenters/collection.presenter";
 
 export class CategoryPresenter {
   id: string;
@@ -17,3 +18,14 @@ export class CategoryPresenter {
     this.created_at = output.created_at;
   }
 }
+
+export class CategoryCollectionPresenter extends CollectionPresenter {
+  data: CategoryPresenter[];
+
+  constructor(output: ListCategoriesUseCase.Output) {
+    const { items, ...paginationProps } = output;
+    super(paginationProps);
+    this.data = items.map(item => new CategoryPresenter(item));
+  }
+}
+

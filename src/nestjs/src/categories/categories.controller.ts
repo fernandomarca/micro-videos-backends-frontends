@@ -10,7 +10,7 @@ import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { SearchCategoryDto } from './dto/search-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { CategoryPresenter } from './presenter/category.presenter';
+import { CategoryCollectionPresenter, CategoryPresenter } from './presenter/category.presenter';
 
 @Controller('categories')
 export class CategoriesController {
@@ -37,11 +37,12 @@ export class CategoriesController {
   }
 
   @Get()
-  search(
+  async search(
     @Query()
     SearchParams: SearchCategoryDto
   ) {
-    return this.listCategory.execute(SearchParams);
+    const output = await this.listCategory.execute(SearchParams);
+    return new CategoryCollectionPresenter(output);
     // return this.categoriesService.search({});
   }
 
