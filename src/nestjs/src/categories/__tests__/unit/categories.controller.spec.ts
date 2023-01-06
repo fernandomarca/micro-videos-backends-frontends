@@ -1,6 +1,6 @@
 import { CreateCategoryUseCase, ListCategoriesUseCase } from '@fm/micro-videos/category/application';
 import { SortDirection } from '@fm/micro-videos/dist/@seedwork/domain/repository/repository-contracts';
-import { CategoryPresenter } from '../../../categories/presenter/category.presenter';
+import { CategoryCollectionPresenter, CategoryPresenter } from '../../../categories/presenter/category.presenter';
 import { CategoriesController } from '../../categories.controller';
 import { CreateCategoryDto } from '../../dto/create-category.dto';
 
@@ -122,8 +122,11 @@ describe('CategoriesController Unit TEsts', () => {
       sort_dir: 'desc' as SortDirection,
       filter: 'test'
     };
-    const output = await controller.search(searchParams);
-    expect(mockListUseCase.execute).toHaveBeenCalled();
-    expect(output).toStrictEqual(expectedOutput);
+    const presenter = await controller.search(searchParams);
+    expect(presenter).toBeInstanceOf(CategoryCollectionPresenter);
+
+    expect(mockListUseCase.execute).toHaveBeenCalledWith(searchParams);
+
+    expect(presenter).toEqual(new CategoryCollectionPresenter(expectedOutput));
   });
 });
