@@ -8,7 +8,8 @@ import { DatabaseModule } from "../../../database/database.module";
 import { CATEGORIES_PROVIDERS } from '../../categories.providers';
 import { NotFoundError, SortDirection } from '@fm/micro-videos/@seedwork/domain';
 import { Category } from "@fm/micro-videos/category/domain";
-import { CategoryCollectionPresenter } from "../../../categories/presenter/category.presenter";
+import { CategoryCollectionPresenter, CategoryPresenter } from "../../../categories/presenter/category.presenter";
+import { CategoryFixture } from "../../../categories/fixtures";
 
 describe('CategoriesController Integration tests', () => {
   let controller: CategoriesController;
@@ -37,43 +38,21 @@ describe('CategoriesController Integration tests', () => {
   });
 
   describe("should create a category", () => {
-    const arrange = [
-      {
-        request: {
-          name: 'Movie'
-        },
-        expectedOutput: {
-          name: "Movie",
-          description: null,
-          is_active: true,
-        }
-      },
-      {
-        request: {
-          name: 'Movie',
-          description: 'some description',
-          is_active: false
-        },
-        expectedOutput: {
-          name: 'Movie',
-          description: 'some description',
-          is_active: false
-        }
-      }
-    ];
-    test.each(arrange)('with request $request', async ({ request, expectedOutput }) => {
-      const presenter = await controller.create(request);
+    const arrange = CategoryFixture.arrangeForSave();
+    test.each(arrange)('with request $request', async ({ send_data, expected }) => {
+      const presenter = await controller.create(send_data);
       const entity = await repository.findById(presenter.id);
 
       expect(presenter.id).toBe(entity.id);
-      expect(entity).toMatchObject({
+      expect(entity.toJSON()).toStrictEqual({
         id: presenter.id,
-        name: expectedOutput.name,
-        description: expectedOutput.description,
-        is_active: expectedOutput.is_active,
-        created_at: presenter.created_at
+        created_at: presenter.created_at,
+        ...expected,
+        ...send_data,
       });
+      expect(presenter).toEqual(new CategoryPresenter(entity));
     });
+
   });
 
   describe("should update a category", () => {

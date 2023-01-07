@@ -3,7 +3,8 @@ import {
   ListCategoriesUseCase,
   UpdateCategoryUseCase,
   GetCategoryUseCase,
-  DeleteCategoryUseCase
+  DeleteCategoryUseCase,
+  CategoryOutput
 } from '@fm/micro-videos/category/application';
 import { Controller, Get, Post, Body, Param, Delete, Inject, Put, HttpCode, Query } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
@@ -32,7 +33,7 @@ export class CategoriesController {
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     const output = await this.createCategory.execute(createCategoryDto);
-    return new CategoryPresenter(output);
+    return CategoriesController.categoryToResponse(output);
     // return await this.categoriesService.create({ name: "asdasd" });
   }
 
@@ -49,7 +50,7 @@ export class CategoriesController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const output = await this.getCategory.execute({ id });
-    return new CategoryPresenter(output);
+    return CategoriesController.categoryToResponse(output);
   }
 
   @Put(':id')
@@ -62,12 +63,16 @@ export class CategoriesController {
       id,
       ...updateCategoryDto
     });
-    return new CategoryPresenter(output);
+    return CategoriesController.categoryToResponse(output);
   }
 
   @HttpCode(204)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.deleteCategory.execute({ id });
+  }
+
+  static categoryToResponse(output: CategoryOutput) {
+    return new CategoryPresenter(output);
   }
 }
