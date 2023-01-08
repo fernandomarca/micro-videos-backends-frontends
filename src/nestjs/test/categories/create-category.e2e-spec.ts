@@ -7,6 +7,7 @@ import { CATEGORIES_PROVIDERS } from '../../../nestjs/src/categories/categories.
 import { CategoryFixture } from '../../../nestjs/src/categories/fixtures';
 import { CategoriesController } from '../../src/categories/categories.controller';
 import { instanceToPlain } from 'class-transformer';
+import { applyGlobalConfig } from '../../src/global-config';
 
 
 describe('CategoriesController (e2e)', () => {
@@ -21,6 +22,7 @@ describe('CategoriesController (e2e)', () => {
     categoryRepo = moduleFixture.get<CategoryRepository.Repository>(CATEGORIES_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide);
 
     app = moduleFixture.createNestApplication();
+    applyGlobalConfig(app);
     await app.init();
   });
 
@@ -36,15 +38,19 @@ describe('CategoriesController (e2e)', () => {
           .send(send_data)
           .expect(201);
 
-        expect(Object.keys(res.body)).toStrictEqual(CategoryFixture.keysInCategoryResponse());
-        const categoryCreated = await categoryRepo.findById(res.body.id);
+        const keyInResponse = CategoryFixture.keysInCategoryResponse();
+        expect(Object.keys(res.body)).toStrictEqual(['data']);
+
+        expect(Object.keys(res.body.data)).toStrictEqual(keyInResponse);
+
+        const categoryCreated = await categoryRepo.findById(res.body.data.id);
 
         const presenter = CategoriesController.categoryToResponse(categoryCreated.toJSON());
 
         const serialized = instanceToPlain(presenter);
 
-        expect(res.body).toStrictEqual(serialized);
-        expect(res.body).toStrictEqual({
+        expect(res.body.data).toStrictEqual(serialized);
+        expect(res.body.data).toStrictEqual({
           id: serialized.id,
           created_at: serialized.created_at,
           ...send_data,
