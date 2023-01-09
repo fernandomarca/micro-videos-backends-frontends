@@ -6,7 +6,7 @@ import {
   DeleteCategoryUseCase,
   CategoryOutput
 } from '@fm/micro-videos/category/application';
-import { Controller, Get, Post, Body, Param, Delete, Inject, Put, HttpCode, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Inject, Put, HttpCode, Query, ValidationPipe, UsePipes } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { SearchCategoryDto } from './dto/search-category.dto';
@@ -31,7 +31,10 @@ export class CategoriesController {
   private readonly deleteCategory: DeleteCategoryUseCase.UseCase;
 
   @Post()
-  async create(@Body() createCategoryDto: CreateCategoryDto) {
+  async create(
+    @Body()
+    createCategoryDto: CreateCategoryDto
+  ) {
     const output = await this.createCategory.execute(createCategoryDto);
     return CategoriesController.categoryToResponse(output);
     // return await this.categoriesService.create({ name: "asdasd" });
