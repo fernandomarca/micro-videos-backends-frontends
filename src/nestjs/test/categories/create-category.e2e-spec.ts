@@ -67,7 +67,7 @@ describe('CategoriesController (e2e)', () => {
           app['config'].globalPipes = [];
         }
       });
-      const invalidRequest = CategoryFixture.arrangeInvalidRequest();
+      const invalidRequest = CategoryFixture.arrangeForEntityValidationError();
 
       const arrange = Object.keys(invalidRequest).map((key) => ({
         label: key,
@@ -75,11 +75,10 @@ describe('CategoriesController (e2e)', () => {
       }));
       test.each(arrange)('when body is $label', async ({ value }) => {
         const res = await request(app.app.getHttpServer())
-          .post('/categories');
-        // .send(value.send_data)
-        // .expect(422)
-        // .expect(value.expected)
-        console.log(res.body, res.statusCode);
+          .post('/categories')
+          .send(value.send_data)
+          .expect(422)
+          .expect(value.expected)
       });
     });
     describe('should create a category', () => {
