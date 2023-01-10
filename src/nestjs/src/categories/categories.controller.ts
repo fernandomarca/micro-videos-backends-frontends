@@ -6,7 +6,7 @@ import {
   DeleteCategoryUseCase,
   CategoryOutput
 } from '@fm/micro-videos/category/application';
-import { Controller, Get, Post, Body, Param, Delete, Inject, Put, HttpCode, Query, ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Inject, Put, HttpCode, Query, ValidationPipe, UsePipes, ParseUUIDPipe } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { SearchCategoryDto } from './dto/search-category.dto';
@@ -51,14 +51,16 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 }))
+    id: string) {
     const output = await this.getCategory.execute({ id });
     return CategoriesController.categoryToResponse(output);
   }
 
   @Put(':id')
   async update(
-    @Param('id')
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 }))
     id: string,
     @Body()
     updateCategoryDto: UpdateCategoryDto) {
@@ -71,7 +73,9 @@ export class CategoriesController {
 
   @HttpCode(204)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 }))
+    id: string) {
     return this.deleteCategory.execute({ id });
   }
 

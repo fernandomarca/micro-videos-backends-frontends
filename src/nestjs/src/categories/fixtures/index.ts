@@ -12,7 +12,10 @@ export class CategoryFixture {
   }
 
   static arrangeForSave() {
-    const faker = Category.fake().aCategory().withName('Movie').build();
+    const faker = Category.fake().aCategory()
+      .withName('Movie')
+      .withDescription('description test')
+      .build();
     return [
       {
         send_data: {
@@ -40,6 +43,23 @@ export class CategoryFixture {
         expected: {
           description: null,
         }
+      },
+      {
+        send_data: {
+          name: faker.name,
+          is_active: false
+        },
+        expected: {
+          description: null,
+        }
+      },
+      {
+        send_data: {
+          name: faker.name,
+          description: faker.description,
+          is_active: true
+        },
+        expected: {}
       }
     ];
   }
@@ -207,5 +227,36 @@ export class CategoryFixture {
         }
       }
     }
+  }
+}
+
+export class CreateCategoryFixture {
+  static keysInResponse() {
+    return CategoryFixture.keysInCategoryResponse();
+  }
+  static arrangeForSave() {
+    return CategoryFixture.arrangeForSave();
+  }
+  static arrangeInvalidRequest() {
+    return CategoryFixture.arrangeInvalidRequest();
+  }
+  static arrangeForEntityValidationError() {
+    return CategoryFixture.arrangeForEntityValidationError();
+  }
+}
+
+export class UpdateCategoryFixture {
+  static keysInResponse() {
+    return CategoryFixture.keysInCategoryResponse();
+  }
+  static arrangeForSave() {
+    return CategoryFixture.arrangeForSave();
+  }
+  static arrangeInvalidRequest() {
+    return CategoryFixture.arrangeInvalidRequest();
+  }
+  static arrangeForEntityValidationError() {
+    const { IS_ACTIVE_NOT_A_BOOLEAN, ...otherKeys } = CategoryFixture.arrangeForEntityValidationError();
+    return otherKeys;
   }
 }
