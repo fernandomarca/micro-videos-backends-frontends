@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  app:
+    # user: 1000:1000
+    # user: "${UID}:${GID}"
+    # volumes:
+    #   - "./.docker/zsh/.zshrc:/home/node/.zsh:delegated"
+    #   - "./.docker/zsh/history:/home/node/zsh:delegated"
+    volumes:
+      - ./.docker/zsh/powerlevel10k/.p10k.zsh:/home/node/.p10k.zsh:delegated
+      - ./.docker/zsh/history:/home/node/zsh:delegated

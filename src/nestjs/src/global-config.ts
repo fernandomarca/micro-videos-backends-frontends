@@ -13,7 +13,7 @@ export function applyGlobalConfig(app: INestApplication) {
     new ClassSerializerInterceptor(app.get(Reflector)),
   );
   app.useGlobalFilters(
-    new NotFoundErrorFilter(),
     new EntityValidationErrorFilter(),
+    new NotFoundErrorFilter(),
   );
 }

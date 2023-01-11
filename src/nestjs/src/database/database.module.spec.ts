@@ -54,8 +54,8 @@ describe('DatabaseModule Unit Tests', () => {
   describe("mysql connection", () => {
     const connOptions = {
       DB_VENDOR: 'mysql',
-      DB_HOST: 'localhost',
-      DB_DATABASE: 'micro-videos',
+      DB_HOST: 'db_test',
+      DB_DATABASE: 'micro_videos_test',
       DB_USERNAME: 'root',
       DB_PASSWORD: 'root',
       DB_PORT: 3306,
@@ -71,33 +71,35 @@ describe('DatabaseModule Unit Tests', () => {
       const { error } = schema.validate(connOptions);
       expect(error).toBeUndefined();
     });
-    //TODO
-    // it('should be a mysql connection', async () => {
-    //   const module = await Test.createTestingModule({
-    //     imports: [DatabaseModule,
-    //       ConfigModule.forRoot({
-    //         isGlobal: true,
-    //         ignoreEnvFile: true,
-    //         ignoreEnvVars: true,
-    //         validationSchema: null,
-    //         load: [
-    //           () => connOptions
-    //         ]
-    //       })
-    //     ]
-    //   }).compile();
+    it('should be a mysql connection', async () => {
+      const module = await Test.createTestingModule({
+        imports: [DatabaseModule,
+          ConfigModule.forRoot({
+            isGlobal: true,
+            ignoreEnvFile: true,
+            ignoreEnvVars: true,
+            validationSchema: null,
+            load: [
+              () => connOptions
+            ]
+          })
+        ]
+      }).compile();
 
-    //   const app = module.createNestApplication();
-    //   console.log(app.get(ConfigService));
-    //   const conn = app.get<Sequelize>(getConnectionToken());
+      const app = module.createNestApplication();
+      console.log(app.get(ConfigService));
+      const conn = app.get<Sequelize>(getConnectionToken());
 
-    //   expect(conn).toBeDefined();
-    //   expect(conn.options.dialect).toBe('mysql');
-    //   expect(conn.options.host).toBe('localhost');
-    //   expect(conn.options).toStrictEqual(connOptions);
-    //   await conn.close();
-    // });
+      expect(conn).toBeDefined();
+      expect(conn.options.dialect).toBe(connOptions.DB_VENDOR);
+      expect(conn.options.host).toBe(connOptions.DB_HOST);
+      expect(conn.options.database).toBe(connOptions.DB_DATABASE);
+      expect(conn.options.username).toBe(connOptions.DB_USERNAME);
+      expect(conn.options.password).toBe(connOptions.DB_PASSWORD);
+      expect(conn.options.port).toBe(connOptions.DB_PORT);
+      // expect(conn.options).toStrictEqual(connOptions);
+      await conn.close();
+    });
 
   });
-
 });
