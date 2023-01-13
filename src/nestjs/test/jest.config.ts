@@ -15,4 +15,7 @@ export default {
     // '#category/domain': '<rootDir>/../../../node_modules/@fc/micro-videos/dist/category/domain/index.js',
     '#category/(.*)$': '<rootDir>/../../../node_modules/@fm/micro-videos/dist/category/$1',
   },
+  setupFilesAfterEnv: [
+    "<rootDir>../../@core/src/@seedwork/domain/tests/jest.ts"
+  ],
 }

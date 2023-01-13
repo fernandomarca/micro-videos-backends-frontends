@@ -1,34 +1,13 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { AppModule } from '../../../nestjs/src/app.module';
 import { CategoryRepository } from '@fm/micro-videos/category/domain';
 import { CATEGORIES_PROVIDERS } from '../../../nestjs/src/categories/categories.providers';
 import { CreateCategoryFixture } from '../../../nestjs/src/categories/fixtures';
 import { CategoriesController } from '../../src/categories/categories.controller';
 import { instanceToPlain } from 'class-transformer';
-import { applyGlobalConfig } from '../../src/global-config';
 import { getConnectionToken } from '@nestjs/sequelize';
-
-function startApp({ beforeInit }: { beforeInit?: (app: INestApplication) => void } = {}) {
-  let _app: INestApplication;
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-    _app = moduleFixture.createNestApplication();
-    applyGlobalConfig(_app);
-    beforeInit && beforeInit(_app);
-    await _app.init();
-  });
-  return {
-    get app() {
-      return _app;
-    }
-  }
-}
+import { startApp } from '../../src/@share/testing/helpers';
 describe('CategoriesController (e2e)', () => {
-  describe('POST /categories', () => {
+  describe('/categories (POST)', () => {
     describe('should a response error with 422 when request body is invalid', () => {
       const app = startApp();
       const invalidRequest = CreateCategoryFixture.arrangeInvalidRequest();

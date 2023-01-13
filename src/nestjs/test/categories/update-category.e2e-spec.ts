@@ -1,35 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { AppModule } from '../../src/app.module';
 import { Category, CategoryRepository } from '@fm/micro-videos/category/domain';
 import { CATEGORIES_PROVIDERS } from '../../src/categories/categories.providers';
 import { UpdateCategoryFixture } from '../../src/categories/fixtures';
 import { CategoriesController } from '../../src/categories/categories.controller';
 import { instanceToPlain } from 'class-transformer';
-import { applyGlobalConfig } from '../../src/global-config';
 import { getConnectionToken } from '@nestjs/sequelize';
+import { startApp } from '../../src/@share/testing/helpers';
 
-function startApp({ beforeInit }: { beforeInit?: (app: INestApplication) => void } = {}) {
-  let _app: INestApplication;
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-    _app = moduleFixture.createNestApplication();
-    applyGlobalConfig(_app);
-    beforeInit && beforeInit(_app);
-    await _app.init();
-  });
-  return {
-    get app() {
-      return _app;
-    }
-  }
-}
 describe('CategoriesController (e2e)', () => {
   const uuid = '93366b7dc-2d71-4799-b91c-c64adb205104';
-  describe('PUT /categories/:id', () => {
+  describe('/categories/:id (PUT)', () => {
 
     describe('should a response error when id is invalid or not found', () => {
       const nestApp = startApp();
