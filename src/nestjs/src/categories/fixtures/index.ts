@@ -260,3 +260,128 @@ export class UpdateCategoryFixture {
     return otherKeys;
   }
 }
+
+export class ListCategoriesFixture {
+  static arrangeIncrementedWithCreatedAt() {
+    const _entities = Category.fake()
+      .theCategories(4)
+      .withName((i) => i + '')
+      .withCreatedAt((i) => new Date(new Date().getTime() + i * 2000))
+      .build();
+
+    const entities = {
+      first: _entities[0],
+      second: _entities[1],
+      third: _entities[2],
+      fourth: _entities[3],
+    };
+
+    const arrange = [
+      {
+        send_data: {},
+        expected: {
+          entities: [
+            entities.fourth,
+            entities.third,
+            entities.second,
+            entities.first,
+          ],
+          meta: {
+            current_page: 1,
+            last_page: 1,
+            per_page: 15,
+            total: 4,
+          },
+        },
+      },
+      {
+        send_data: {
+          page: 1,
+          per_page: 2,
+        },
+        expected: {
+          entities: [entities.fourth, entities.third],
+          meta: {
+            current_page: 1,
+            last_page: 2,
+            per_page: 2,
+            total: 4,
+          },
+        },
+      },
+      {
+        send_data: {
+          page: 2,
+          per_page: 2,
+        },
+        expected: {
+          entities: [entities.second, entities.first],
+          meta: {
+            current_page: 2,
+            last_page: 2,
+            per_page: 2,
+            total: 4,
+          },
+        },
+      },
+    ];
+
+    return { arrange, entities };
+  }
+
+  static arrangeUnsorted() {
+    const faker = Category.fake().aCategory();
+
+    const entities = {
+      a: faker.withName('a').build(),
+      AAA: faker.withName('AAA').build(),
+      AaA: faker.withName('AaA').build(),
+      b: faker.withName('b').build(),
+      c: faker.withName('c').build(),
+    };
+
+    const arrange = [
+      {
+        send_data: {
+          page: 1,
+          per_page: 2,
+          sort: 'name',
+          filter: 'a'
+        },
+        expected: {
+          entities: [
+            entities.AAA,
+            entities.AaA,
+          ],
+          meta: {
+            current_page: 1,
+            last_page: 2,
+            per_page: 2,
+            total: 3
+          }
+        }
+      },
+      {
+        send_data: {
+          page: 2,
+          per_page: 2,
+          sort: 'name',
+          filter: 'a'
+        },
+        expected: {
+          entities: [
+            entities.a,
+          ],
+          meta: {
+            current_page: 2,
+            last_page: 2,
+            per_page: 2,
+            total: 3
+          }
+        }
+      },
+    ];
+    return { arrange, entities };
+  }
+
+}

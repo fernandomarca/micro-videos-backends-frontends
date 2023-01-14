@@ -9,7 +9,7 @@ import { CATEGORIES_PROVIDERS } from '../../categories.providers';
 import { NotFoundError, SortDirection } from '@fm/micro-videos/@seedwork/domain';
 import { Category } from "@fm/micro-videos/category/domain";
 import { CategoryCollectionPresenter, CategoryPresenter } from "../../../categories/presenter/category.presenter";
-import { CategoryFixture } from "../../../categories/fixtures";
+import { CategoryFixture, ListCategoriesFixture, UpdateCategoryFixture } from "../../../categories/fixtures";
 
 describe('CategoriesController Integration tests', () => {
   let controller: CategoriesController;
@@ -56,50 +56,22 @@ describe('CategoriesController Integration tests', () => {
   });
 
   describe("should update a category", () => {
-    // let category: CategorySequelize.CategoryModel;
+    const arrange = UpdateCategoryFixture.arrangeForSave();
     const category = Category.fake().aCategory().build();
     beforeEach(async () => {
-      // category = await CategorySequelize.CategoryModel.factory().create();
       await repository.insert(category);
     });
-
-    const arrange = [
-      {
-        request: {
-          name: 'Movie'
-        },
-        expectedOutput: {
-          name: "Movie",
-          description: null,
-          is_active: true,
-        }
-      },
-      {
-        request: {
-          name: 'Movie',
-          description: 'some description',
-          is_active: false
-        },
-        expectedOutput: {
-          name: 'Movie',
-          description: 'some description',
-          is_active: false
-        }
-      }
-    ];
-
-    test.each(arrange)('with request $request', async ({ request, expectedOutput }) => {
-      const presenter = await controller.update(category.id, request);
+    test.each(arrange)('with request $send_data', async ({ send_data, expected }) => {
+      const presenter = await controller.update(category.id, send_data);
       const entity = await repository.findById(presenter.id);
 
-      expect(presenter.id).toBe(entity.id);
       expect(entity).toMatchObject({
         id: presenter.id,
-        name: expectedOutput.name,
-        description: expectedOutput.description,
-        is_active: expectedOutput.is_active,
-        created_at: presenter.created_at
+        created_at: presenter.created_at,
+        ...send_data,
+        ...expected
       });
+      expect(presenter).toEqual(new CategoryPresenter(entity));
     });
 
   });
@@ -130,170 +102,43 @@ describe('CategoriesController Integration tests', () => {
   });
 
   describe("search method", () => {
-    it('should returns categories using query empty ordered by created_at', async () => {
-      const categories = Category.fake()
-        .theCategories(4)
-        .withName((index) => index + '')
-        .withCreatedAt((index) => new Date(new Date().getTime() + index))
-        .build();
+    describe('should returns categories using query empty ordered by created_at', () => {
+      const { entities: entitiesObj, arrange } = ListCategoriesFixture.arrangeIncrementedWithCreatedAt();
 
-      await repository.bulkInsert(categories);
-
-      const arrange = [
-        {
-          send_data: {},
-          expected: {
-            items: [
-              categories[3],
-              categories[2],
-              categories[1],
-              categories[0],
-            ],
-            current_page: 1,
-            last_page: 1,
-            per_page: 15,
-            total: 4,
-          }
-        },
-        {
-          send_data: { per_page: 2 },
-          expected: {
-            items: [
-              categories[3],
-              categories[2],
-            ],
-            current_page: 1,
-            last_page: 2,
-            per_page: 2,
-            total: 4,
-          }
-        },
-        {
-          send_data: { per_page: 2, page: 2 },
-          expected: {
-            items: [
-              categories[1],
-              categories[0],
-            ],
-            current_page: 2,
-            last_page: 2,
-            per_page: 2,
-            total: 4,
-          }
-        }
-      ];
-
-      for (const item of arrange) {
-        const presenter = await controller.search(item.send_data);
+      beforeEach(async () => {
+        await repository.bulkInsert(Object.values(entitiesObj));
+      });
+      test.each(arrange)('when send_data is $send_data', async ({
+        send_data, expected
+      }) => {
+        const presenter = await controller.search(send_data);
+        const { entities, ...paginationProps } = expected;
         expect(presenter).toEqual(
-          new CategoryCollectionPresenter(item.expected)
-        );
-      }
+          new CategoryCollectionPresenter({
+            items: entities,
+            ...paginationProps.meta
+          }));
+      });
     });
 
-    it("should returns output using pagination, sort and filter", async () => {
-      const faker = Category.fake().aCategory();
-      const categories = [
-        faker.withName('a').build(),
-        faker.withName('AAA').build(),
-        faker.withName('AaA').build(),
-        faker.withName('b').build(),
-        faker.withName('c').build(),
-      ];
+    describe("should returns output using pagination, sort and filter", () => {
+      const { entities: entitiesObj, arrange } = ListCategoriesFixture.arrangeUnsorted();
 
-      await repository.bulkInsert(categories);
+      beforeEach(async () => {
+        await repository.bulkInsert(Object.values(entitiesObj));
+      });
 
-      const arrange = [
-        {
-          send_data: {
-            page: 1,
-            per_page: 2,
-            sort: 'name',
-            filter: 'a',
-          },
-          expected: {
-            items: [
-              categories[1],
-              categories[2],
-            ],
-            current_page: 1,
-            last_page: 2,
-            per_page: 2,
-            total: 3,
-          } as unknown as ListCategoriesUseCase.Output
-        },
-        {
-          send_data: {
-            page: 2,
-            per_page: 2,
-            sort: 'name',
-            filter: 'a',
-          },
-          expected: {
-            items: [
-              categories[0],
-            ],
-            current_page: 2,
-            last_page: 2,
-            per_page: 2,
-            total: 3,
-          } as unknown as ListCategoriesUseCase.Output
-        }
-      ];
-
-      for (const item of arrange) {
-        const presenter = await controller.search(item.send_data);
+      test.each(arrange)('when send_data is $send_data', async ({
+        send_data, expected
+      }) => {
+        const presenter = await controller.search(send_data);
+        const { entities, ...paginationProps } = expected;
         expect(presenter).toEqual(
-          new CategoryCollectionPresenter(item.expected)
-        );
-      }
-
-      const arrange_desc = [
-        {
-          send_data: {
-            page: 1,
-            per_page: 2,
-            sort: 'name',
-            sort_dir: 'desc' as SortDirection,
-            filter: 'a',
-          },
-          expected: {
-            items: [
-              categories[0],
-              categories[2],
-            ],
-            current_page: 1,
-            last_page: 2,
-            per_page: 2,
-            total: 3,
-          } as unknown as ListCategoriesUseCase.Output
-        },
-        {
-          send_data: {
-            page: 2,
-            per_page: 2,
-            sort: 'name',
-            sort_dir: 'desc' as SortDirection,
-            filter: 'a',
-          },
-          expected: {
-            items: [
-              categories[1],
-            ],
-            current_page: 2,
-            last_page: 2,
-            per_page: 2,
-            total: 3,
-          } as unknown as ListCategoriesUseCase.Output
-        }
-      ];
-
-      for (const item of arrange_desc) {
-        const presenter = await controller.search(item.send_data);
-        expect(presenter).toEqual(
-          new CategoryCollectionPresenter(item.expected)
-        );
-      }
+          new CategoryCollectionPresenter({
+            items: entities,
+            ...paginationProps.meta
+          }));
+      });
     });
   });
 });
