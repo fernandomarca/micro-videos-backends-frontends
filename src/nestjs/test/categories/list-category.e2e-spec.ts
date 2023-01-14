@@ -1,11 +1,10 @@
-import request from 'supertest';
-import { Category, CategoryRepository } from '@fm/micro-videos/category/domain';
-import { CATEGORIES_PROVIDERS } from '../../src/categories/categories.providers';
-import { ListCategoriesFixture, UpdateCategoryFixture } from '../../src/categories/fixtures';
-import { CategoriesController } from '../../src/categories/categories.controller';
+import { CategoryRepository } from '@fm/micro-videos/category/domain';
 import { instanceToPlain } from 'class-transformer';
-import { getConnectionToken } from '@nestjs/sequelize';
+import request from 'supertest';
 import { startApp } from '../../src/@share/testing/helpers';
+import { CategoriesController } from '../../src/categories/categories.controller';
+import { CATEGORIES_PROVIDERS } from '../../src/categories/categories.providers';
+import { ListCategoriesFixture } from '../../src/categories/fixtures';
 
 describe('CategoriesController (e2e)', () => {
   // const uuid = '93366b7dc-2d71-4799-b91c-c64adb205104';
