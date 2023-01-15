@@ -25,7 +25,7 @@ describe('CategoriesController (e2e)', () => {
       test.each(arrange)('when query params is $send_data', async ({ send_data, expected }) => {
         //page=1&per_page=2
         const queryParams = new URLSearchParams(send_data as any).toString();
-        return request(nestApp.app.getHttpServer())
+        request(nestApp.app.getHttpServer())
           .get(`/categories/?${queryParams}`)
           .send(send_data)
           .expect(200)
@@ -52,7 +52,7 @@ describe('CategoriesController (e2e)', () => {
       test.each(arrange)('when query params is $send_data', async ({ send_data, expected }) => {
         //page=1&per_page=2
         const queryParams = new URLSearchParams(send_data as any).toString();
-        return request(nestApp.app.getHttpServer())
+        request(nestApp.app.getHttpServer())
           .get(`/categories/?${queryParams}`)
           .send(send_data)
           .expect(200)

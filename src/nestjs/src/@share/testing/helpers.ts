@@ -10,12 +10,14 @@ import { Sequelize } from 'sequelize';
 export function startApp({ beforeInit }: { beforeInit?: (app: INestApplication) => void } = {}) {
   let _app: INestApplication;
   let canRunMigrations: boolean;
+
   beforeEach(async () => {
     const moduleBuilder: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
-    canRunMigrations = !moduleBuilder.get(ConfigService)
+    canRunMigrations = !moduleBuilder
+      .get(ConfigService)
       .get("DB_AUTO_LOAD_MODELS");
 
     const sequelize = moduleBuilder.get<Sequelize>(getConnectionToken());

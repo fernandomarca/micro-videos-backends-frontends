@@ -54,7 +54,7 @@ describe('DatabaseModule Unit Tests', () => {
   describe("mysql connection", () => {
     const connOptions = {
       DB_VENDOR: 'mysql',
-      DB_HOST: 'db_test',
+      DB_HOST: "localhost",
       DB_DATABASE: 'micro_videos_test',
       DB_USERNAME: 'root',
       DB_PASSWORD: 'root',
@@ -73,7 +73,8 @@ describe('DatabaseModule Unit Tests', () => {
     });
     it('should be a mysql connection', async () => {
       const module = await Test.createTestingModule({
-        imports: [DatabaseModule,
+        imports: [
+          DatabaseModule,
           ConfigModule.forRoot({
             isGlobal: true,
             ignoreEnvFile: true,
@@ -87,7 +88,7 @@ describe('DatabaseModule Unit Tests', () => {
       }).compile();
 
       const app = module.createNestApplication();
-      console.log(app.get(ConfigService));
+      // console.log(app.get(ConfigService));
       const conn = app.get<Sequelize>(getConnectionToken());
 
       expect(conn).toBeDefined();

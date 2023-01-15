@@ -11,8 +11,12 @@ services:
       - .:/home/node/app
     ports:
       - 3000:3000
+    links:
+    - "db"
+    - "db_test"
 
   db:
+    platform: linux/amd64
     image: mysql:8.0.31-debian
     container_name: micro-videos-typescript-db
     profiles:
@@ -26,8 +30,10 @@ services:
       - seccomp:unconfined
 
   db_test:
+    platform: linux/amd64
     image: mysql:8.0.31-debian
     container_name: micro-videos-typescript-db-test
+    # command: --innodb-use-native-aio=0
     environment:
       - MYSQL_DATABASE=micro_videos_test
       - MYSQL_ROOT_PASSWORD=root
@@ -35,4 +41,5 @@ services:
       - /var/lib/mysql
     security_opt:
     - seccomp:unconfined
-
+    ports:
+      - 3306:3306

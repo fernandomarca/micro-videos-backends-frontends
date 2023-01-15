@@ -6,6 +6,7 @@ import { CategoriesController } from '../../src/categories/categories.controller
 import { instanceToPlain } from 'class-transformer';
 import { getConnectionToken } from '@nestjs/sequelize';
 import { startApp } from '../../src/@share/testing/helpers';
+
 describe('CategoriesController (e2e)', () => {
   describe('/categories (POST)', () => {
     describe('should a response error with 422 when request body is invalid', () => {
@@ -16,8 +17,9 @@ describe('CategoriesController (e2e)', () => {
         label: key,
         value: invalidRequest[key],
       }));
+      // console.log(app.app.getHttpServer());
       test.each(arrange)('when body is $label', ({ value }) => {
-        return request(app.app.getHttpServer())
+        request(app.app.getHttpServer())
           .post('/categories')
           .send(value.send_data)
           .expect(422)
@@ -38,7 +40,7 @@ describe('CategoriesController (e2e)', () => {
         value: invalidRequest[key],
       }));
       test.each(arrange)('when body is $label', ({ value }) => {
-        return request(app.app.getHttpServer())
+        request(app.app.getHttpServer())
           .post('/categories')
           .send(value.send_data)
           .expect(422)

@@ -8,14 +8,14 @@ fi
 
 ### nestjs configs ###
 echo "### Starting nestjs configs ###"
-if [ ! -f "./src/nestjs/.env" ]; then
-  cp ./src/nestjs/.env.example ./src/nestjs/.env
+if [ ! -f "./src/nestjs/envs/.env" ]; then
+  cp ./src/nestjs/envs/.env.example ./src/nestjs/envs/.env
 fi
-if [ ! -f "./src/nestjs/.env.test" ]; then
-  cp ./src/nestjs/.env.test.example ./src/nestjs/.env.test
+if [ ! -f "./src/nestjs/envs/.env.test" ]; then
+  cp ./src/nestjs/envs/.env.test.example ./src/nestjs/envs/.env.test
 fi
-if [ ! -f "./src/nestjs/.env.e2e" ]; then
-  cp ./src/nestjs/.env.e2e.example ./src/nestjs/.env.e2e
+if [ ! -f "./src/nestjs/envs/.env.e2e" ]; then
+  cp ./src/nestjs/envs/.env.e2e.example ./src/nestjs/envs/.env.e2e
 fi
 
 npm install

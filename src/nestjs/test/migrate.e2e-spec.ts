@@ -19,14 +19,14 @@ describe('Migrate (e2e)', () => {
   test('up command', async () => {
     await umzug.down({ to: 0 as any });
     const result = await umzug.up();
-    console.log(result);
+    // console.log(result);
     expect(result).toHaveLength(totalMigrations);
   });
 
   test('down command', async () => {
     await umzug.up();
     const result = await umzug.down({ to: 0 as any });
-    console.log(result);
+    // console.log(result);
     expect(result).toHaveLength(totalMigrations);
   });
 });

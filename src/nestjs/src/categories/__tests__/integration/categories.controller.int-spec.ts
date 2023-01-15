@@ -1,15 +1,15 @@
+import { NotFoundError } from '@fm/micro-videos/@seedwork/domain';
 import { CreateCategoryUseCase, DeleteCategoryUseCase, GetCategoryUseCase, ListCategoriesUseCase, UpdateCategoryUseCase } from "@fm/micro-videos/category/application";
+import { Category } from "@fm/micro-videos/category/domain";
 import { CategoryInMemoryRepository } from "@fm/micro-videos/category/infra";
 import { Test, TestingModule } from "@nestjs/testing";
 import { CategoriesController } from "../../../categories/categories.controller";
 import { CategoriesModule } from "../../../categories/categories.module";
+import { CategoryFixture, ListCategoriesFixture, UpdateCategoryFixture } from "../../../categories/fixtures";
+import { CategoryCollectionPresenter, CategoryPresenter } from "../../../categories/presenter/category.presenter";
 import { ConfigModule } from "../../../config/config.module";
 import { DatabaseModule } from "../../../database/database.module";
 import { CATEGORIES_PROVIDERS } from '../../categories.providers';
-import { NotFoundError, SortDirection } from '@fm/micro-videos/@seedwork/domain';
-import { Category } from "@fm/micro-videos/category/domain";
-import { CategoryCollectionPresenter, CategoryPresenter } from "../../../categories/presenter/category.presenter";
-import { CategoryFixture, ListCategoriesFixture, UpdateCategoryFixture } from "../../../categories/fixtures";
 
 describe('CategoriesController Integration tests', () => {
   let controller: CategoriesController;

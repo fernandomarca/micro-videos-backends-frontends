@@ -1,12 +1,8 @@
-import request from 'supertest';
+import { NotFoundError } from '@fm/micro-videos/@seedwork/domain';
 import { Category, CategoryRepository } from '@fm/micro-videos/category/domain';
-import { CATEGORIES_PROVIDERS } from '../../src/categories/categories.providers';
-import { UpdateCategoryFixture } from '../../src/categories/fixtures';
-import { CategoriesController } from '../../src/categories/categories.controller';
-import { instanceToPlain } from 'class-transformer';
-import { getConnectionToken } from '@nestjs/sequelize';
+import request from 'supertest';
 import { startApp } from '../../src/@share/testing/helpers';
-import { NotFoundError } from 'rxjs';
+import { CATEGORIES_PROVIDERS } from '../../src/categories/categories.providers';
 
 describe('CategoriesController (e2e)', () => {
   describe('/delete/:id (DELETE)', () => {
@@ -33,7 +29,7 @@ describe('CategoriesController (e2e)', () => {
       ];
 
       test.each(arrange)('when id is $id', async ({ id, send_data, expected }) => {
-        return request(nestApp.app.getHttpServer())
+        request(nestApp.app.getHttpServer())
           .put(`/categories/${id}`)
           .send(send_data)
           .expect(expected.status)
@@ -47,7 +43,7 @@ describe('CategoriesController (e2e)', () => {
       await categoryRepo.insert(category);
 
       await request(nestApp.app.getHttpServer())
-        .put(`/categories/${category.id}`)
+        .delete(`/categories/${category.id}`)
         .expect(204);
 
       await expect(categoryRepo.findById(category.id)).rejects.toThrow(

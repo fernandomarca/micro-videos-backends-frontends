@@ -1,11 +1,10 @@
-import request from 'supertest';
 import { Category, CategoryRepository } from '@fm/micro-videos/category/domain';
-import { CATEGORIES_PROVIDERS } from '../../src/categories/categories.providers';
-import { CategoryFixture, UpdateCategoryFixture } from '../../src/categories/fixtures';
-import { CategoriesController } from '../../src/categories/categories.controller';
 import { instanceToPlain } from 'class-transformer';
-import { getConnectionToken } from '@nestjs/sequelize';
+import request from 'supertest';
 import { startApp } from '../../src/@share/testing/helpers';
+import { CategoriesController } from '../../src/categories/categories.controller';
+import { CATEGORIES_PROVIDERS } from '../../src/categories/categories.providers';
+import { CategoryFixture } from '../../src/categories/fixtures';
 
 describe('CategoriesController (e2e)', () => {
   const nestApp = startApp();
@@ -32,7 +31,7 @@ describe('CategoriesController (e2e)', () => {
       ];
 
       test.each(arrange)('when id is $id', async ({ id, expected }) => {
-        return request(nestApp.app.getHttpServer())
+        request(nestApp.app.getHttpServer())
           .get(`/categories/${id}`)
           .expect(expected.status)
           .expect(expected)
@@ -45,7 +44,7 @@ describe('CategoriesController (e2e)', () => {
       categoryRepo.insert(category);
 
       const res = await request(nestApp.app.getHttpServer())
-        .put(`/categories/${category.id}`)
+        .get(`/categories/${category.id}`)
         .expect(200);
 
       const keyInResponse = CategoryFixture.keysInCategoryResponse();
@@ -53,7 +52,7 @@ describe('CategoriesController (e2e)', () => {
 
       expect(Object.keys(res.body.data)).toStrictEqual(keyInResponse);
 
-      const presenter = CategoriesController.categoryToResponse(category.toJson());
+      const presenter = CategoriesController.categoryToResponse(category.toJSON());
 
       const serialized = instanceToPlain(presenter);
 

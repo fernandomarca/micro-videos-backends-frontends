@@ -36,7 +36,7 @@ describe('CategoriesController (e2e)', () => {
       ];
 
       test.each(arrange)('when id is $id', async ({ id, send_data, expected }) => {
-        return request(nestApp.app.getHttpServer())
+        request(nestApp.app.getHttpServer())
           .put(`/categories/${id}`)
           .send(send_data)
           .expect(expected.status)
@@ -53,7 +53,7 @@ describe('CategoriesController (e2e)', () => {
         value: invalidRequest[key],
       }));
       test.each(arrange)('when body is $label', ({ value }) => {
-        return request(app.app.getHttpServer())
+        request(app.app.getHttpServer())
           .put(`/categories/${uuid}`)
           .send(value.send_data)
           .expect(422)
@@ -81,7 +81,7 @@ describe('CategoriesController (e2e)', () => {
       test.each(arrange)('when body is $label', async ({ value }) => {
         const category = Category.fake().aCategory().build();
         await categoryRepo.insert(category);
-        return request(app.app.getHttpServer())
+        request(app.app.getHttpServer())
           .put(`/categories/${category.id}`)
           .send(value.send_data)
           .expect(422)
