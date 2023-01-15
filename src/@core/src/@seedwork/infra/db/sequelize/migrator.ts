@@ -9,7 +9,7 @@ export const migrator = (sequelize: Sequelize, options?: Partial<UmzugOptions>) 
         "*/infra/db/sequelize/migrations/*.{js,ts}",
         {
           cwd: join(__dirname, "../../../../"),
-          ignore: ["*.d.ts"]
+          ignore: ["**.d.ts", "**/index.ts", "**/index.js"]
         }
       ],
     },
