@@ -5,6 +5,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { migrator } from "../../../../@core/src/@seedwork/infra/db/sequelize";
 import { AppModule } from "../../app.module";
 import { applyGlobalConfig } from "../../global-config";
+import { Sequelize } from 'sequelize';
 
 export function startApp({ beforeInit }: { beforeInit?: (app: INestApplication) => void } = {}) {
   let _app: INestApplication;
@@ -17,12 +18,13 @@ export function startApp({ beforeInit }: { beforeInit?: (app: INestApplication) 
     canRunMigrations = !moduleBuilder.get(ConfigService)
       .get("DB_AUTO_LOAD_MODELS");
 
-    const sequelize = moduleBuilder.get(getConnectionToken());
+    const sequelize = moduleBuilder.get<Sequelize>(getConnectionToken());
 
     try {
       if (canRunMigrations) {
         const umzug = migrator(sequelize, { logger: undefined });
-        await umzug.down({ to: 0 as any });
+        // await umzug.down({ to: 0 as any });
+        await sequelize.drop();
         await umzug.up();
       } else {
         await sequelize.sync({ force: true });

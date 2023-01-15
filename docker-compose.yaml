@@ -22,6 +22,8 @@ services:
       - MYSQL_ROOT_PASSWORD=root
     volumes:
       - ./.docker/dbdata:/var/lib/mysql:delegated
+    security_opt:
+      - seccomp:unconfined
 
   db_test:
     image: mysql:8.0.31-debian
@@ -31,3 +33,6 @@ services:
       - MYSQL_ROOT_PASSWORD=root
     tmpfs:
       - /var/lib/mysql
+    security_opt:
+    - seccomp:unconfined
+
