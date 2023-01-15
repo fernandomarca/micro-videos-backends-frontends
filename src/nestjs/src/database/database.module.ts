@@ -51,7 +51,7 @@ import { CONFIG_SCHEMA_TYPE } from 'src/config/config.module';
         throw new Error('Unsupported database config');
       },
       inject: [ConfigService]
-    })
+    }),
   ]
 })
 export class DatabaseModule { }

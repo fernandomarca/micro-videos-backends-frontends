@@ -24,6 +24,9 @@
       "@seedwork/domain": [
         "./dist/@seedwork/domain/index.d.ts"
       ],
+      "@seedwork/infra": [
+        "./dist/@seedwork/infra/index.d.ts"
+      ],
       "category/application": [
         "./dist/category/application/index.d.ts"
       ],
@@ -43,7 +46,8 @@
     "build:w": "tsc -b ./tsconfig.json -w",
     "test:cov": "npm run test -- --coverage",
     "cti": "cti",
-    "cti:make": "sh ./cti.sh"
+    "cti:make": "sh ./cti.sh",
+    "migrate": "node -r ts-node/register/transpile-only ./src/@seedwork/infra/db/sequelize/migrator-cli.ts"
   },
   "repository": {
     "type": "git",
@@ -63,7 +67,8 @@
     "mysql2": "^2.3.3",
     "sequelize": "^6.25.8",
     "sequelize-typescript": "^2.1.5",
-    "sqlite3": "^5.1.2"
+    "sqlite3": "^5.1.2",
+    "umzug": "^3.2.1"
   },
   "devDependencies": {
     "@swc/core": "^1.3.19",
