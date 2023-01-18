@@ -131,8 +131,29 @@ describe("UpdateCategoryUseCase Integration Tests", () => {
     ];
 
     for (const i of arrange) {
-      output = await useCase.execute(i.input);
-      expect(output).toStrictEqual(i.expect);
+      output = await useCase.execute(
+        {
+          id: i.input.id,
+          name: i.input.name,
+          description: i.input.description,
+          is_active: i.input.is_active
+        }
+      );
+      const entityUpdated = await repository.findById(i.input.id);
+      expect(output).toStrictEqual({
+        id: entity.id,
+        name: i.expect.name,
+        description: i.expect.description,
+        is_active: i.expect.is_active,
+        created_at: entityUpdated.created_at
+      });
+      expect(entityUpdated.toJSON()).toStrictEqual({
+        id: entity.id,
+        name: i.expect.name,
+        description: i.expect.description,
+        is_active: i.expect.is_active,
+        created_at: entityUpdated.created_at
+      });
     }
   });
 });
