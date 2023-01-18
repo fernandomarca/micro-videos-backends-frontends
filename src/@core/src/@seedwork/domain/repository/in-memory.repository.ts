@@ -42,13 +42,13 @@ export abstract class InMemoryRepository<E extends Entity> implements Repository
   }
 }
 
-export abstract class InMemorySearchableRepository<E extends Entity>
+export abstract class InMemorySearchableRepository<E extends Entity, Filter = string>
   extends InMemoryRepository<E>
-  implements SearchableRepositoryInterface<E>{
+  implements SearchableRepositoryInterface<E, Filter>{
   //força a inicialização nas classes filhas.  
   abstract sortableFields: string[];
 
-  async search(props: SearchParams): Promise<SearchResult<E>> {
+  async search(props: SearchParams<Filter>): Promise<SearchResult<E, Filter>> {
     const itemsFiltered = await this.applyFilter(this.items, props.filter);
 
     const itemsSorted = await this.applySort(itemsFiltered, props.sort, props.sort_dir);

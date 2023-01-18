@@ -14,7 +14,12 @@ describe("PaginationOutputMapper Unit test", () => {
     });
     const spyToOutput = jest.spyOn(PaginationOutputMapper, 'toOutput');
 
-    const output = PaginationOutputMapper.toOutput(result);
+    const output = PaginationOutputMapper.toOutput(
+      {
+        items: result.items,
+        ...result
+      }
+    );
     expect(spyToOutput).toHaveBeenCalled();
     expect(output).toStrictEqual({
       total: 1,

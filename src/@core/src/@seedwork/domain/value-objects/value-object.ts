@@ -26,8 +26,8 @@ export abstract class ValueObject<Value = any>{
       return false;
     }
 
-    // return isEqual(this.value, obj.value);
-    return isDeepStrictEqual(this.value, obj.value);
+    return isEqual(this.value, obj.value);
+    // return isDeepStrictEqual(this.value, obj.value);
   }
 
   toString = () => {

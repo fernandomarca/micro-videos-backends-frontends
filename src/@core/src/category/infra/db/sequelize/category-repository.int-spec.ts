@@ -19,7 +19,7 @@ describe("CategorySequelizeRepository unit tests", () => {
       name: "Movie"
     });
     await repository.insert(category);
-    let model = await CategoryModel.findByPk(category.id);
+    let model = await repository.findById(category.id);
 
     expect(model.toJSON()).toStrictEqual(category.toJSON());
 
@@ -30,7 +30,7 @@ describe("CategorySequelizeRepository unit tests", () => {
     });
 
     await repository.insert(category);
-    model = await CategoryModel.findByPk(category.id);
+    model = await repository.findById(category.id);
 
     expect(model.toJSON()).toStrictEqual(category.toJSON());
   });
@@ -98,8 +98,12 @@ describe("CategorySequelizeRepository unit tests", () => {
     await repository.insert(entity);
 
     await repository.delete(entity.id);
-    let entityFound = await CategoryModel.findByPk(entity.id);
-    expect(entityFound).toBeNull();
+
+    await expect(repository.findById(entity.id)).rejects.toThrow(
+      new NotFoundError(
+        `Entity Not Found using ID ${entity.id}`
+      )
+    );
   });
   describe("search method tests", () => {
     it('should only apply paginate when other params are null', async () => {

@@ -8,13 +8,24 @@ export type PaginationOutputDto<Items = any> = {
   per_page: number,
 };
 
+export type PaginationOutputProps<Item> = {
+  items: Item[],
+  total: number,
+  current_page: number,
+  last_page: number,
+  per_page: number,
+}
+
 export class PaginationOutputMapper {
-  static toOutput(searchResult: SearchResult): Omit<PaginationOutputDto, "items"> {
+  static toOutput<Item = any>(
+    props: PaginationOutputProps<Item>
+  ): PaginationOutputDto<Item> {
     return {
-      total: searchResult.total,
-      current_page: searchResult.current_page,
-      last_page: searchResult.last_page,
-      per_page: searchResult.per_page,
+      items: props.items,
+      total: props.total,
+      current_page: props.current_page,
+      last_page: props.last_page,
+      per_page: props.per_page,
     }
   }
 }
