@@ -1,3 +1,5 @@
+import isEqual from "lodash/isEqual";
+import { isDeepStrictEqual } from "node:util";
 import { deepFreeze } from "../utils/object";
 
 export abstract class ValueObject<Value = any>{
@@ -9,6 +11,23 @@ export abstract class ValueObject<Value = any>{
 
   get value(): Value {
     return this._value;
+  }
+
+  public equals(obj: this): boolean {
+    if (obj === null || obj === undefined) {
+      return false;
+    }
+
+    if (obj.value === undefined) {
+      return false;
+    }
+
+    if (obj.constructor.name !== this.constructor.name) {
+      return false;
+    }
+
+    // return isEqual(this.value, obj.value);
+    return isDeepStrictEqual(this.value, obj.value);
   }
 
   toString = () => {
