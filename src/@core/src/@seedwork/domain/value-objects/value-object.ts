@@ -1,5 +1,4 @@
 import isEqual from "lodash/isEqual";
-import { isDeepStrictEqual } from "node:util";
 import { deepFreeze } from "../utils/object";
 
 export abstract class ValueObject<Value = any>{
