@@ -14,17 +14,18 @@ public class Notification implements ValidationHandler {
         this.errors = errors;
     }
 
-    public static Notification create(){
+    public static Notification create() {
         return new Notification(new ArrayList<>());
     }
 
-    public static Notification create(final Throwable t){
+    public static Notification create(final Throwable t) {
         return create(new Error(t.getMessage()));
     }
 
-    public static Notification create(final Error anError){
+    public static Notification create(final Error anError) {
         return new Notification(new ArrayList<>()).append(anError);
     }
+
     @Override
     public Notification append(final Error anError) {
         this.errors.add(anError);
@@ -39,12 +40,12 @@ public class Notification implements ValidationHandler {
 
     @Override
     public Notification validate(final Validation validation) {
-        try{
+        try {
             validation.validate();
-        }catch(final DomainException ex){
+        } catch (final DomainException ex) {
             this.errors.addAll(ex.getErrors());
-        }catch(final  Throwable t){
-this.errors.add(new Error(t.getMessage()));
+        } catch (final Throwable t) {
+            this.errors.add(new Error(t.getMessage()));
         }
         return this;
     }
