@@ -1,0 +1,58 @@
+FROM node:16.16.0-slim as testing
+
+# RUN mkdir -p /usr/share/man/man1 && \
+#   echo 'deb http://ftp.debian.org/debian stretch-backports main' | tee /etc/apt/sources.list.d/stretch-backports.list && \
+#   apt update && apt install -y \
+#   bash \
+#   git \
+#   ca-certificates \
+#   openjdk-11-jre \
+#   zsh \
+#   curl \
+#   wget \
+#   fonts-powerline \
+#   procps
+
+# ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+
+USER node
+
+# Se você precisar alterar o uid/gid do usuário, você pode usar:
+# RUN groupmod -g 999 node && usermod -u 999 -g 999 node
+# Se você precisar de outro nome para o usuário (ex. myapp) execute:
+# RUN usermod -d /home/myapp -l myapp node
+
+RUN mkdir -p /home/node/app
+
+WORKDIR /home/node/app
+
+COPY --chown=node:node package.json package-lock.json ./
+
+RUN npm ci
+
+COPY --chown=node:node . .
+
+RUN npm run build
+
+ENV NODE_ENV=prod
+CMD ["npm","run","start:prod"]
+
+#multi stage build
+
+FROM node:16.16.0-slim as production
+
+USER node
+
+RUN mkdir -p /home/node/app
+
+WORKDIR /home/node/app
+
+COPY --from=testing --chown=node:node /home/node/app/package*.json ./
+RUN npm ci --omit=dev
+
+COPY --from=testing --chown=node:node /home/node/app .
+
+EXPOSE 3000
+
+ENV NODE_ENV=prod
+CMD ["npm","run","start:prod"]

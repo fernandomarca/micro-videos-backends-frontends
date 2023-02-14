@@ -1,0 +1,11 @@
+.history/
+.vscode/
+.devcontainer/
+.git/
+.github/
+dist/
+node_modules/
+uml/
+docker-compose.yaml
+Dockerfile.dev
+Dockerfile.prod

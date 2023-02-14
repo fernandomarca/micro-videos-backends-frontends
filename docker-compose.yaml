@@ -1,9 +1,45 @@
-version: '3'
+version: "3.8"
 
 services:
   app:
-    build: .
+    # user: "${UID}:${GID}"
+    build:
+      context: .
     container_name: micro-videos-typescript-app
+    command: .docker/start.sh
     volumes:
       - .:/home/node/app
-      - /home/node/app/node_modules
+    ports:
+      - 3000:3000
+    links:
+    - "db"
+    - "db_test"
+
+  db:
+    platform: linux/amd64
+    image: mysql:8.0.31-debian
+    container_name: micro-videos-typescript-db
+    profiles:
+      - dev
+    environment:
+      - MYSQL_DATABASE=micro_videos
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./.docker/dbdata:/var/lib/mysql:delegated
+    security_opt:
+      - seccomp:unconfined
+
+  db_test:
+    platform: linux/amd64
+    image: mysql:8.0.31-debian
+    container_name: micro-videos-typescript-db-test
+    # command: --innodb-use-native-aio=0
+    environment:
+      - MYSQL_DATABASE=micro_videos_test
+      - MYSQL_ROOT_PASSWORD=root
+    tmpfs:
+      - /var/lib/mysql
+    security_opt:
+    - seccomp:unconfined
+    ports:
+      - 3306:3306
