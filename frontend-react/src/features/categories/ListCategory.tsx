@@ -1,74 +1,16 @@
 import { Delete } from "@mui/icons-material";
 import { Box, Button, IconButton, Typography } from "@mui/material";
-import { DataGrid, GridColDef, GridRenderCellParams, GridRowsProp, GridToolbar } from "@mui/x-data-grid";
+import { GridRenderCellParams } from "@mui/x-data-grid";
 import { useSnackbar } from "notistack";
 import { useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
-import { deleteCategory, useDeleteCategoryMutation, useGetCategoriesQuery } from "./categorySlice";
+import { useDeleteCategoryMutation, useGetCategoriesQuery } from "./categorySlice";
+import { CategoriesTable } from "./components/CategoryTable";
 
 export const CategoryList = () => {
 
   const { data, isFetching, error } = useGetCategoriesQuery();
   const [deleteCategory, deleteCategoryStatus] = useDeleteCategoryMutation();
-  // const categories = useAppSelector(selectCategories);
-  const dispatch = useAppDispatch();
-
-  const rows: GridRowsProp = data ? data?.data.map((category) => ({
-    id: category.id,
-    name: category.name,
-    description: category.description,
-    is_active: category.is_active,
-    createdAt: new Date(category.created_at).toLocaleDateString("pt-BR")
-  }))
-    : [];
-
-  const columns: GridColDef[] = [
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
-      renderCell: (row) => renderNameCell(row)
-    },
-    {
-      field: "description",
-      headerName: "Description",
-      flex: 1,
-      headerAlign: "center",
-      align: "center"
-    },
-    {
-      field: "is_active",
-      headerName: "Active",
-      flex: 1,
-      headerAlign: "center",
-      align: "center",
-      type: "boolean",
-      renderCell: (row) => renderIsActiveCell(row)
-    },
-    {
-      field: "createdAt",
-      headerName: "Created At",
-      flex: 1,
-      headerAlign: "center",
-      align: "center"
-    },
-    {
-      field: "id",
-      headerName: "Actions",
-      flex: 1,
-      renderCell: (row) => renderActionCell(row),
-      headerAlign: "center",
-      align: "center"
-    }
-  ];
-
-  const componentsProps = {
-    toolbar: {
-      showQuickFilter: true,
-      quickFilterProps: { debounceMs: 500 },
-    }
-  }
 
   const renderNameCell = useCallback((rowData: GridRenderCellParams) => {
     return (
@@ -138,7 +80,7 @@ export const CategoryList = () => {
         </Button>
       </Box>
 
-      <Box
+      {/* <Box
         sx={{
           height: 600,
           display: "flex"
@@ -156,7 +98,9 @@ export const CategoryList = () => {
           columns={columns}
           componentsProps={componentsProps}
         />
-      </Box>
+      </Box> */}
+
+      {/* <CategoriesTable data={data} perPage={10} /> */}
     </Box>
   );
 };

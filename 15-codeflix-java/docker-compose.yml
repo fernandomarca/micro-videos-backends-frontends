@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  mysql:
+    container_name: adm_videos_mysql
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: adm_videos
+      # MYSQL_USER: user
+      # MYSQL_PASSWORD: password
+    security_opt:
+      - seccomp:unconfined
+    ports:
+      - 3306:3306
+    networks:
+      - adm_videos_network
+    # volumes:
+    #   - ./mysql:/var/lib/mysql
+
+networks:
+  adm_videos_network:
+    driver: bridge
