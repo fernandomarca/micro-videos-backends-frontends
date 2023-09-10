@@ -11,7 +11,7 @@ public final class SpecificationUtils {
         like(term.toUpperCase()));
   }
 
-  private static String like(final String term) {
+  public static String like(final String term) {
     return "%" + term + "%";
   }
 }
