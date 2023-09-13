@@ -2,6 +2,7 @@ package com.fullcycle.admin.catalogo.infrastructure.api;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
+import com.fullcycle.admin.catalogo.infrastructure.category.models.CategoryApiOutput;
 import com.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryApiInput;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,4 +48,13 @@ public interface CategoryAPI {
       @RequestParam(name = "sort", required = false, defaultValue = "name") final String sort,
 
       @RequestParam(name = "dir", required = false, defaultValue = "asc") final String dir);
+
+  @GetMapping(value = "{id}", consumes = "MediaType.APPLICATION_JSON_VALUE", produces = "MediaType.APPLICATION_JSON_VALUE")
+  @Operation(summary = "Get a category by id")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Get successfully"),
+      @ApiResponse(responseCode = "404", description = "Category not found"),
+      @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+  })
+  CategoryApiOutput getById(@PathVariable(name = "id") String id);
 }
