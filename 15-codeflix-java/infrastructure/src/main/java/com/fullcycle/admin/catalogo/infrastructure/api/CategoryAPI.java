@@ -1,6 +1,7 @@
 package com.fullcycle.admin.catalogo.infrastructure.api;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "categories")
 public interface CategoryAPI {
 
-        @PostMapping(consumes = "MediaType.APPLICATION_JSON_VALUE", produces = "MediaType.APPLICATION_JSON_VALUE")
+        @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
         @Operation(summary = "Create a new category")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "201", description = "Created successfully"),
@@ -49,7 +50,7 @@ public interface CategoryAPI {
                         @RequestParam(name = "sort", required = false, defaultValue = "name") final String sort,
                         @RequestParam(name = "dir", required = false, defaultValue = "asc") final String dir);
 
-        @GetMapping(value = "{id}", consumes = "MediaType.APPLICATION_JSON_VALUE", produces = "MediaType.APPLICATION_JSON_VALUE")
+        @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
         @Operation(summary = "Get a category by id")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Get successfully"),
@@ -58,7 +59,7 @@ public interface CategoryAPI {
         })
         CategoryResponse getById(@PathVariable(name = "id") String id);
 
-        @PutMapping(value = "{id}", consumes = "MediaType.APPLICATION_JSON_VALUE", produces = "MediaType.APPLICATION_JSON_VALUE")
+        @PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
         @Operation(summary = "Update a category by id")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Category updated successfully"),
@@ -67,7 +68,7 @@ public interface CategoryAPI {
         })
         ResponseEntity<?> updateById(@PathVariable(name = "id") String id, @RequestBody UpdateCategoryRequest input);
 
-        @DeleteMapping(value = "{id}", consumes = "MediaType.APPLICATION_JSON_VALUE", produces = "MediaType.APPLICATION_JSON_VALUE")
+        @DeleteMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
         @ResponseStatus(HttpStatus.NO_CONTENT)
         @Operation(summary = "Delete a category by id")
         @ApiResponses(value = {

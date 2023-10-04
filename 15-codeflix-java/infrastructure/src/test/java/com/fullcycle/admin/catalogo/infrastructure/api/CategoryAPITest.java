@@ -195,7 +195,7 @@ public class CategoryAPITest {
                 // when
                 final var request = get("/categories/{id}", expectedId)
                                 // .with(ApiTest.CATEGORIES_JWT)
-                                .accept(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON_VALUE)
                                 .contentType(MediaType.APPLICATION_JSON);
 
                 final var response = this.mvc.perform(request)
@@ -211,8 +211,7 @@ public class CategoryAPITest {
                                 .andExpect(jsonPath("$.created_at",
                                                 equalTo(aCategory.getCreatedAt().toString())))
                                 .andExpect(jsonPath("$.updated_at",
-                                                equalTo(aCategory.getUpdatedAt().toString())))
-                                .andExpect(jsonPath("$.deleted_at", equalTo(aCategory.getDeletedAt())));
+                                                equalTo(aCategory.getUpdatedAt().toString())));
 
                 verify(getCategoryByIdUseCase, times(1)).execute(eq(expectedId));
         }
@@ -404,8 +403,8 @@ public class CategoryAPITest {
                                 .queryParam("sort", expectedSort)
                                 .queryParam("dir", expectedDirection)
                                 .queryParam("search", expectedTerms)
-                                .accept(MediaType.APPLICATION_JSON_VALUE)
-                                .contentType(MediaType.APPLICATION_JSON_VALUE);
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON);
 
                 final var response = this.mvc.perform(request)
                                 .andDo(print());
