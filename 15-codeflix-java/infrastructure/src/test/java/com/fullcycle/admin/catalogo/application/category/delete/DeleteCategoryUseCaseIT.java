@@ -1,6 +1,5 @@
 package com.fullcycle.admin.catalogo.application.category.delete;
 
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 
 import java.util.Arrays;
