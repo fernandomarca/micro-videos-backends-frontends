@@ -1,23 +1,23 @@
 package com.fullcycle.admin.catalogo.domain.video;
 
+import java.util.Objects;
+
 import com.fullcycle.admin.catalogo.domain.Identifier;
 import com.fullcycle.admin.catalogo.domain.utils.IdUtils;
 
-import java.util.Objects;
-
-public class VideoID extends Identifier {
+public class VideoCategoryID extends Identifier {
   private final String value;
 
-  private VideoID(final String value) {
+  private VideoCategoryID(final String value) {
     this.value = Objects.requireNonNull(value);
   }
 
-  public static VideoID from(final String anId) {
-    return new VideoID(anId.toLowerCase());
+  public static VideoCategoryID from(final String anId) {
+    return new VideoCategoryID(anId.toLowerCase());
   }
 
-  public static VideoID unique() {
-    return VideoID.from(IdUtils.uuid());
+  public static VideoCategoryID unique() {
+    return VideoCategoryID.from(IdUtils.uuid());
   }
 
   @Override
@@ -31,7 +31,7 @@ public class VideoID extends Identifier {
       return true;
     if (o == null || getClass() != o.getClass())
       return false;
-    final VideoID that = (VideoID) o;
+    final VideoCategoryID that = (VideoCategoryID) o;
     return getValue().equals(that.getValue());
   }
 
