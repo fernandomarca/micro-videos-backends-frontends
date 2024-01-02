@@ -1,3 +1,4 @@
+import { Notification } from "../validators/notification";
 import { UniqueEntityId } from "../value-objects/unique-entity-id.vo";
 
 export abstract class Entity<
@@ -5,6 +6,8 @@ export abstract class Entity<
   JsonProps = Required<{ id: string } & Props>
 >{
   public readonly uniqueEntityId: UniqueEntityId;
+
+  notification = new Notification();
 
   constructor(
     readonly props: Props,
