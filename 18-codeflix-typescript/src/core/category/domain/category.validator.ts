@@ -1,7 +1,7 @@
 import { MaxLength } from 'class-validator';
 import { Category } from './category.aggregate';
 import { ClassValidatorFields } from '../../shared/domain/validators/class-validator-fields';
-import { Notification } from '../../core/shared/domain/validators/notification';
+import { Notification } from '../../shared/domain/validators/notification';
 
 //criar um testes que verifique os decorators
 export class CategoryRules {

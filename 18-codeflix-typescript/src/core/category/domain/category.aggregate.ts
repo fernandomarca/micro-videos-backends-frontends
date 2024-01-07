@@ -45,13 +45,13 @@ export class Category extends Entity {
     const category = new Category(props);
     //category.validate();
     // Category.validate(category);
-    // category.validate(['name']);
+    category.validate(['name']);
     return category;
   }
 
   changeName(name: string): void {
     this.name = name;
-    // this.validate(['name']);
+    this.validate(['name']);
   }
 
   changeDescription(description: string | null): void {
