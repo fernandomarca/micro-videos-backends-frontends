@@ -18,6 +18,20 @@ services:
     # volumes:
     #   - ./mysql:/var/lib/mysql
 
+  rabbitmq:
+    container_name: adm_videos_rabbitmq
+    image: rabbitmq:3.8.3-management
+    environment:
+      RABBITMQ_ERLANG_COOKIE: SWQOKODSQALRPCLNMEQG
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: 123456
+      RABBITMQ_DEFAULT_VHOST: /
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - adm_videos_network
+
 networks:
   adm_videos_network:
     driver: bridge

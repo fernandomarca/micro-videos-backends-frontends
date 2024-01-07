@@ -10,11 +10,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "category")
+@Entity(name = "Category")
+@Table(name = "categories")
 public class CategoryJpaEntity {
 
   @Id
+  @Column(name = "id", nullable = false)
   private String id;
 
   @Column(name = "name", nullable = false)

@@ -1,3 +1,9 @@
+amqp:
+  host: ${amqp.host}
+  port: ${amqp.port}
+  username: ${amqp.username}s
+  password: ${amqp.password}
+
 mysql:
   username: ${DATABASE_MYSQL_USERNAME:root}
   password: ${DATABASE_MYSQL_PASSWORD:123456}
