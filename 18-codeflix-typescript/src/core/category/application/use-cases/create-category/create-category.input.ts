@@ -26,7 +26,9 @@ export class CreateCategoryInput {
   is_active?: boolean;
 
   constructor(props: CreateCategoryInputConstructorProps) {
-    if (!props) return;
+    if (!props) {
+      return;
+    }
     this.name = props.name;
     this.description = props.description;
     this.is_active = props.is_active;
