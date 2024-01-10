@@ -159,7 +159,7 @@ describe('CategorySequelizeRepository Integration Test', () => {
           filter: 'TEST',
         }),
       );
-      expect(searchOutput.toJSON(true)).toMatchObject(
+      expect(searchOutput!.toJSON(true)).toMatchObject(
         new CategorySearchResult({
           items: [categories[0], categories[2]],
           total: 3,
@@ -256,7 +256,7 @@ describe('CategorySequelizeRepository Integration Test', () => {
 
       for (const i of arrange) {
         const result = await repository.search(i.params);
-        expect(result.toJSON(true)).toMatchObject(i.result.toJSON(true));
+        expect(result!.toJSON(true)).toMatchObject(i.result.toJSON(true));
       }
     });
 
@@ -308,7 +308,9 @@ describe('CategorySequelizeRepository Integration Test', () => {
         'when value is $search_params',
         async ({ search_params, search_result }) => {
           const result = await repository.search(search_params);
-          expect(result.toJSON(true)).toMatchObject(search_result.toJSON(true));
+          expect(result!.toJSON(true)).toMatchObject(
+            search_result.toJSON(true),
+          );
         },
       );
     });
