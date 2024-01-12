@@ -12,17 +12,17 @@ import {
   Query,
 } from '@nestjs/common';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { CreateCategoryUseCase } from '@core/category/application/use-cases/create-category/create-category.use-case';
-import { UpdateCategoryUseCase } from '@core/category/application/use-cases/update-category/update-category.use-case';
-import { DeleteCategoryUseCase } from '@core/category/application/use-cases/delete-category/delete-category.use-case';
-import { GetCategoryUseCase } from '@core/category/application/use-cases/get-category/get-category.use-case';
-import { ListCategoriesUseCase } from '@core/category/application/use-cases/list-categories/list-categories.use-case';
+import { CreateCategoryUseCase } from '../../core/category/application/use-cases/create-category/create-category.use-case';
+import { UpdateCategoryUseCase } from '../../core/category/application/use-cases/update-category/update-category.use-case';
+import { DeleteCategoryUseCase } from '../../core/category/application/use-cases/delete-category/delete-category.use-case';
+import { GetCategoryUseCase } from '../../core/category/application/use-cases/get-category/get-category.use-case';
+import { ListCategoriesUseCase } from '../../core/category/application/use-cases/list-categories/list-categories.use-case';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import {
   CategoryCollectionPresenter,
   CategoryPresenter,
 } from './categories.presenter';
-import { CategoryOutput } from '@core/category/application/use-cases/common/category-output';
+import { CategoryOutput } from '../../core/category/application/use-cases/common/category-output';
 import { SearchCategoriesDto } from './dto/search-categories.dto';
 
 @Controller('categories')

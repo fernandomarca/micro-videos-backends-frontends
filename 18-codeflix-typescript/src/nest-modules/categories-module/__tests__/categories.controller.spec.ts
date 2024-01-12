@@ -1,4 +1,4 @@
-import { SortDirection } from '@core/shared/domain/repository/search-params';
+import { SortDirection } from '../../../core/shared/domain/repository/search-params';
 import { CategoriesController } from '../categories.controller';
 import { CreateCategoryOutput } from '../../../core/category/application/use-cases/create-category/create-category.use-case';
 import { CreateCategoryDto } from '../dto/create-category.dto';

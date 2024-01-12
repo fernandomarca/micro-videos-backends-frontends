@@ -13,16 +13,20 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "migrate:ts": "node -r ts-node/register/transpile-only ./src/migrate.ts",
+    "migrate:js": "node ./src/migrate.js",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.config.ts",
+    "test:e2e:watch": "jest --config ./test/jest-e2e.config.ts --watchAll --runInBand"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/sequelize": "^10.0.0",
@@ -38,6 +42,7 @@
     "sequelize": "^6.35.2",
     "sequelize-typescript": "^2.1.6",
     "sqlite3": "^5.1.7",
+    "umzug": "^3.3.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

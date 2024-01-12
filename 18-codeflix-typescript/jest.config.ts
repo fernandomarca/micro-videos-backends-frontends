@@ -199,6 +199,25 @@ const config: Config = {
   setupFilesAfterEnv: ['./core/shared/infra/testing/expect-helpers.ts'],
   resetMocks: true,
   clearMocks: true,
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '.interface.ts',
+    '-interface.ts',
+    'shared/testing',
+    'shared-module/testing',
+    'validator-rules.ts',
+    '-fixture.ts',
+    '.input.ts',
+    '.d.ts',
+  ],
+  coverageThreshold: {
+    global: {
+      statements: 80,
+      branches: 80,
+      functions: 80,
+      lines: 80,
+    },
+  },
 };
 
 export default config;
